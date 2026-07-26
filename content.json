@@ -1,4 +1,15 @@
 {
+  "settings": {
+    "sections": {
+      "bio": true,
+      "fotos": true,
+      "videos": true,
+      "mixes": true,
+      "booking": true
+    },
+    "accent_color": "#757575",
+    "bg_color": "#000000"
+  },
   "press": {
     "quote": "Cita corta de un medio, promotor o colega sobre tu música o tus sets.",
     "source": "Nombre del medio",
