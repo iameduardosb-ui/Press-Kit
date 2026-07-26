@@ -7,7 +7,7 @@
       "mixes": true,
       "booking": true
     },
-    "accent_color": "#757575",
+    "accent_color": "#7d7d7d",
     "bg_color": "#0a0a0b"
   },
   "press": {
@@ -66,19 +66,19 @@
   "gallery": [
     {
       "image": "images/img_2133.jpg",
-      "alt": "Foto 2"
+      "alt": "Foto 1"
     },
     {
       "image": "images/img_2120.jpg",
-      "alt": "Foto 3"
+      "alt": "Foto 2"
     },
     {
       "image": "images/9b9f26d6-f2a9-4865-b6cb-bd591fde96bf.jpg",
-      "alt": "Foto 4"
+      "alt": "Foto 3"
     },
     {
       "image": "images/e168a8e8-3738-4f62-a6c0-bbff972e1530-2.jpg",
-      "alt": "Foto 5"
+      "alt": "Foto 4"
     }
   ],
   "videos": [
@@ -122,10 +122,6 @@
       {
         "value": "2018",
         "label": "Activo desde"
-      },
-      {
-        "value": "137 - 144 BPM",
-        "label": "Rango habitual"
       }
     ],
     "genres": [
@@ -138,7 +134,7 @@
         "bpm": "137 - 142 BM"
       }
     ],
-    "kicker_prefix": ""
+    "kicker_prefix": "Press-Kit"
   },
   "footer": {
     "text": "© 2026 Eduaar. Todos los derechos reservados."
