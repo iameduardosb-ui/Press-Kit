@@ -15,6 +15,24 @@ collections:
         label: "Página completa"
         name: "content"
         fields:
+          - label: "Apariencia y secciones"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Color de acento", name: "accent_color", widget: "color", hint: "El color de detalles, botones y títulos destacados" }
+              - { label: "Color de fondo", name: "bg_color", widget: "color", hint: "Usa un tono oscuro para que el texto siga siendo legible" }
+              - label: "Mostrar / ocultar secciones"
+                name: "sections"
+                widget: "object"
+                fields:
+                  - { label: "Biografía", name: "bio", widget: "boolean", default: true }
+                  - { label: "Fotos", name: "fotos", widget: "boolean", default: true }
+                  - { label: "Videos", name: "videos", widget: "boolean", default: true }
+                  - { label: "Mixes", name: "mixes", widget: "boolean", default: true }
+                  - { label: "Discografía", name: "discografia", widget: "boolean", default: true }
+                  - { label: "Prensa", name: "prensa", widget: "boolean", default: true }
+                  - { label: "Booking", name: "booking", widget: "boolean", default: true }
+
           - label: "Hero (portada)"
             name: "hero"
             widget: "object"
@@ -59,7 +77,7 @@ collections:
             fields:
               - { label: "Título", name: "title", widget: "string" }
               - { label: "Año", name: "year", widget: "string" }
-              - { label: "ID de YouTube", name: "youtube_id", widget: "string", hint: "La parte de la URL después de v=" }
+              - { label: "Link del video", name: "url", widget: "string", hint: "Pega la URL del video: YouTube, Vimeo, o cualquier link de embed directo" }
 
           - label: "Mixes (audio)"
             name: "tracks"
