@@ -411,6 +411,56 @@ const imgOr = (url, label, cls='') => url
   ? `<img class="media ${cls}" src="${url}" alt="${label}">`
   : ph(label, cls);
 
+/* ---------- tema de colores (editable desde /admin) ---------- */
+function hexToRgb(hex){
+  hex = (hex || '').replace('#','');
+  if(hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+  const num = parseInt(hex, 16);
+  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
+}
+function rgbToHex(r,g,b){
+  return '#' + [r,g,b].map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+}
+function lighten(hex, amt){
+  const { r,g,b } = hexToRgb(hex);
+  return rgbToHex(r+amt, g+amt, b+amt);
+}
+function applyTheme(settings){
+  if(!settings) return;
+  const root = document.documentElement.style;
+  if(settings.accent_color){
+    root.setProperty('--accent', settings.accent_color);
+    const { r,g,b } = hexToRgb(settings.accent_color);
+    root.setProperty('--accent-dim', `rgba(${r},${g},${b},.16)`);
+  }
+  if(settings.bg_color){
+    root.setProperty('--bg', settings.bg_color);
+    root.setProperty('--bg-alt', lighten(settings.bg_color, 10));
+    root.setProperty('--bg-raise', lighten(settings.bg_color, 18));
+  }
+}
+function applySectionVisibility(sections){
+  if(!sections) return;
+  Object.keys(sections).forEach(key => {
+    const visible = sections[key] !== false;
+    const el = document.getElementById(key);
+    if(el) el.style.display = visible ? '' : 'none';
+    document.querySelectorAll(`.nav-links a[href="#${key}"]`).forEach(a => {
+      a.style.display = visible ? '' : 'none';
+    });
+  });
+}
+
+/* ---------- video: acepta YouTube, Vimeo o un link de embed directo ---------- */
+function resolveEmbedSrc(url){
+  if(!url) return '';
+  let m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
+  if(m) return `https://www.youtube.com/embed/${m[1]}`;
+  m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if(m) return `https://player.vimeo.com/video/${m[1]}`;
+  return url; // ya es un link de embed de otra plataforma
+}
+
 fetch('content.json?_=' + Date.now())
   .then(r => r.json())
   .then(data => { DATA = data; render(data); })
@@ -419,6 +469,8 @@ fetch('content.json?_=' + Date.now())
   });
 
 function render(d){
+  applyTheme(d.settings);
+
   document.getElementById('heroKicker').textContent = d.hero.kicker;
   document.getElementById('heroTitle1').textContent = d.hero.title_line1;
   document.getElementById('heroTitle2').textContent = d.hero.title_line2;
@@ -438,7 +490,7 @@ function render(d){
     `<div class="gallery-item ph" data-idx="${i}">${imgOr(g.image, g.alt)}</div>`).join('');
 
   document.getElementById('videoGrid').innerHTML = d.videos.map(v => `
-    <div class="video-card" data-video="${v.youtube_id}">
+    <div class="video-card" data-url="${v.url}">
       <div class="ph video-thumb"><div class="play-ring"></div></div>
       <div class="video-meta"><span>${v.title}</span><span>${v.year}</span></div>
     </div>`).join('');
@@ -469,6 +521,7 @@ function render(d){
 
   document.getElementById('footerText').textContent = d.footer.text;
 
+  applySectionVisibility(d.settings && d.settings.sections);
   initInteractions();
 }
 
@@ -483,7 +536,7 @@ function initInteractions(){
   document.getElementById('videoGrid').addEventListener('click', (e) => {
     const card = e.target.closest('.video-card');
     if(!card) return;
-    openVideoModal(card.dataset.video);
+    openVideoModal(card.dataset.url);
   });
 
   document.querySelectorAll('section, .release, .video-card').forEach(el => el.classList.add('reveal'));
@@ -521,8 +574,9 @@ function openImageModal(url, label){
   modalBody.innerHTML = url ? `<img src="${url}" alt="${label}">` : `<div class="ph" style="aspect-ratio:4/3;">${label} — sube esta imagen en /admin</div>`;
   modal.classList.add('open');
 }
-function openVideoModal(videoId){
-  modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="Video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+function openVideoModal(url){
+  const src = resolveEmbedSrc(url);
+  modalBody.innerHTML = `<iframe src="${src}" title="Video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
   modal.classList.add('open');
 }
 
