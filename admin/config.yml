@@ -1,0 +1,111 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "images"
+
+locale: "es"
+
+collections:
+  - name: "site"
+    label: "Contenido del sitio"
+    files:
+      - file: "content.json"
+        label: "Página completa"
+        name: "content"
+        fields:
+          - label: "Hero (portada)"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Texto pequeño superior", name: "kicker", widget: "string" }
+              - { label: "Título línea 1 (ej. DJ)", name: "title_line1", widget: "string" }
+              - { label: "Título línea 2 (tu nombre)", name: "title_line2", widget: "string" }
+              - { label: "Frase / tagline", name: "tagline", widget: "text" }
+              - label: "Estadísticas rápidas"
+                name: "stats"
+                widget: "list"
+                fields:
+                  - { label: "Valor", name: "value", widget: "string" }
+                  - { label: "Etiqueta", name: "label", widget: "string" }
+
+          - label: "Biografía"
+            name: "bio"
+            widget: "object"
+            fields:
+              - { label: "Foto principal", name: "photo", widget: "image", required: false }
+              - label: "Párrafos"
+                name: "paragraphs"
+                widget: "list"
+                field: { label: "Párrafo", name: "text", widget: "text" }
+              - label: "Estadísticas"
+                name: "stats"
+                widget: "list"
+                fields:
+                  - { label: "Valor", name: "value", widget: "string" }
+                  - { label: "Etiqueta", name: "label", widget: "string" }
+
+          - label: "Galería de fotos"
+            name: "gallery"
+            widget: "list"
+            fields:
+              - { label: "Imagen", name: "image", widget: "image", required: false }
+              - { label: "Descripción", name: "alt", widget: "string" }
+
+          - label: "Videos"
+            name: "videos"
+            widget: "list"
+            fields:
+              - { label: "Título", name: "title", widget: "string" }
+              - { label: "Año", name: "year", widget: "string" }
+              - { label: "ID de YouTube", name: "youtube_id", widget: "string", hint: "La parte de la URL después de v=" }
+
+          - label: "Mixes (audio)"
+            name: "tracks"
+            widget: "list"
+            fields:
+              - { label: "Título", name: "title", widget: "string" }
+              - { label: "Etiqueta (ej. Original Mix)", name: "tag", widget: "string" }
+              - { label: "Duración (ej. 6:32)", name: "dur", widget: "string" }
+              - { label: "Archivo de audio", name: "src", widget: "file", required: false, hint: "Sube un mp3 o pega una URL externa" }
+
+          - label: "Discografía"
+            name: "releases"
+            widget: "list"
+            fields:
+              - { label: "Título", name: "title", widget: "string" }
+              - { label: "Sello", name: "label_name", widget: "string" }
+              - { label: "Año", name: "year", widget: "string" }
+              - { label: "Enlace (Bandcamp / Beatport / Spotify)", name: "url", widget: "string" }
+              - { label: "Portada", name: "image", widget: "image", required: false }
+
+          - label: "Prensa"
+            name: "press"
+            widget: "object"
+            fields:
+              - { label: "Cita destacada", name: "quote", widget: "text" }
+              - { label: "Fuente de la cita", name: "source", widget: "string" }
+              - label: "Logos de medios"
+                name: "logos"
+                widget: "list"
+                fields:
+                  - { label: "Logo", name: "image", widget: "image", required: false }
+                  - { label: "Nombre del medio", name: "alt", widget: "string" }
+
+          - label: "Booking"
+            name: "booking"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Instagram (@usuario)", name: "instagram", widget: "string" }
+              - { label: "SoundCloud (/usuario)", name: "soundcloud", widget: "string" }
+              - { label: "WhatsApp / Agencia", name: "whatsapp", widget: "string" }
+              - { label: "Texto del rider técnico", name: "rider_text", widget: "text" }
+              - { label: "PDF del rider", name: "rider_pdf", widget: "file", required: false }
+
+          - label: "Pie de página"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Texto del footer", name: "text", widget: "string" }

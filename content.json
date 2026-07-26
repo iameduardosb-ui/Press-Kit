@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "kicker": "Press Kit — Techno / House",
+    "title_line1": "DJ",
+    "title_line2": "NOMBRE",
+    "tagline": "Una línea que describa tu sonido: dónde nace, qué lo mueve y qué encuentra el público en la pista cuando estás detrás de los platos.",
+    "stats": [
+      { "value": "+00", "label": "Ciudades" },
+      { "value": "0000", "label": "Activo desde" },
+      { "value": "000 BPM", "label": "Rango habitual" }
+    ]
+  },
+  "bio": {
+    "photo": "",
+    "paragraphs": [
+      "**Tu nombre** es DJ y productor/a de techno y house con base en ciudad, país. Reemplaza este párrafo con tu historia: cómo empezaste, qué sellos o colectivos te formaron, y qué caracteriza tu selección musical.",
+      "Ha tocado en nombres de clubs y festivales, compartiendo cabina con artistas relevantes. Su estilo combina groove, texturas y referencias propias.",
+      "Un párrafo corto sobre producción propia, sellos en los que ha lanzado música, o proyectos paralelos, si aplica."
+    ],
+    "stats": [
+      { "value": "00", "label": "Años activo" },
+      { "value": "00", "label": "Festivales" },
+      { "value": "00", "label": "Releases" }
+    ]
+  },
+  "gallery": [
+    { "image": "", "alt": "Foto 1" },
+    { "image": "", "alt": "Foto 2" },
+    { "image": "", "alt": "Foto 3" },
+    { "image": "", "alt": "Foto 4" },
+    { "image": "", "alt": "Foto 5" },
+    { "image": "", "alt": "Foto 6" },
+    { "image": "", "alt": "Foto 7" },
+    { "image": "", "alt": "Foto 8" }
+  ],
+  "videos": [
+    { "title": "Set — Club, Ciudad", "year": "2026", "youtube_id": "dQw4w9WgXcQ" },
+    { "title": "Aftermovie — Festival", "year": "2025", "youtube_id": "dQw4w9WgXcQ" },
+    { "title": "Boiler Room style set", "year": "2025", "youtube_id": "dQw4w9WgXcQ" }
+  ],
+  "tracks": [
+    { "title": "Nombre de la pista 01", "tag": "Original Mix", "dur": "6:32", "src": "" },
+    { "title": "Nombre de la pista 02", "tag": "Live set — extracto", "dur": "8:10", "src": "" },
+    { "title": "Nombre de la pista 03", "tag": "Remix", "dur": "5:48", "src": "" },
+    { "title": "Nombre de la pista 04", "tag": "Radio show", "dur": "12:20", "src": "" }
+  ],
+  "releases": [
+    { "title": "Nombre del track / EP", "label_name": "Sello", "year": "2026", "url": "#", "image": "" },
+    { "title": "Nombre del track / EP", "label_name": "Sello", "year": "2025", "url": "#", "image": "" },
+    { "title": "Nombre del track / EP", "label_name": "Sello", "year": "2025", "url": "#", "image": "" },
+    { "title": "Nombre del track / EP", "label_name": "Sello", "year": "2024", "url": "#", "image": "" }
+  ],
+  "press": {
+    "quote": "Cita corta de un medio, promotor o colega sobre tu música o tus sets.",
+    "source": "Nombre del medio",
+    "logos": [
+      { "image": "", "alt": "Medio 1" },
+      { "image": "", "alt": "Medio 2" },
+      { "image": "", "alt": "Medio 3" },
+      { "image": "", "alt": "Club / Sello" }
+    ]
+  },
+  "booking": {
+    "email": "booking@tudominio.com",
+    "instagram": "@tuusuario",
+    "soundcloud": "/tuusuario",
+    "whatsapp": "+00 000 000 000",
+    "rider_text": "Especificaciones de equipo (mesa de mezclas, reproductores, monitoreo) para promotores. Sube tu PDF y enlázalo aquí.",
+    "rider_pdf": ""
+  },
+  "footer": {
+    "text": "© 2026 DJ NOMBRE. Todos los derechos reservados."
+  }
+}

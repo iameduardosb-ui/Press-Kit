@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ NOMBRE — Press Kit</title>
+<meta name="description" content="Press kit oficial de DJ NOMBRE. Techno / House. Fotos, videos, mixes y booking.">
+<meta property="og:title" content="DJ NOMBRE — Press Kit">
+<meta property="og:description" content="Techno / House. Fotos, videos, mixes y booking.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0b;
+    --bg-alt:#141416;
+    --bg-raise:#1c1c1e;
+    --line: rgba(236,234,228,.12);
+    --line-strong: rgba(236,234,228,.28);
+    --fg:#ECEAE4;
+    --muted:#8c8a85;
+    --accent:#F2C200;
+    --accent-dim: rgba(242,194,0,.16);
+    --display: 'Bebas Neue', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --body: 'Inter', sans-serif;
+    --pad: clamp(20px, 5vw, 64px);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--accent); color:#0a0a0b; }
+
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--accent); }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:400; letter-spacing:.01em; line-height:.92; text-transform:uppercase; }
+
+  section{ padding:88px var(--pad); position:relative; border-top:1px solid var(--line); }
+  .section-head{ max-width:640px; margin-bottom:48px; }
+  .section-head h2{ font-size:clamp(38px,6vw,64px); }
+  .section-head p{ color:var(--muted); margin-top:12px; font-size:15px; max-width:52ch; }
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px var(--pad);
+    background:rgba(10,10,11,0);
+    border-bottom:1px solid transparent;
+    transition:background .3s ease, border-color .3s ease, padding .3s ease;
+  }
+  nav.scrolled{ background:rgba(10,10,11,.88); backdrop-filter:blur(10px); border-color:var(--line); padding:12px var(--pad); }
+  .logo{ font-family:var(--display); font-size:22px; letter-spacing:.06em; }
+  .logo span{ color:var(--accent); }
+  .nav-links{ display:flex; gap:34px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  .nav-links a{ color:var(--muted); position:relative; transition:color .2s; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--fg); }
+  .nav-links a.active::after{ content:''; position:absolute; left:0; right:0; bottom:-6px; height:1px; background:var(--accent); }
+  .nav-cta{ font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line-strong); padding:9px 16px; transition:.2s; }
+  .nav-cta:hover{ border-color:var(--accent); color:var(--accent); }
+  .burger{ display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:60; background:none; border:0; }
+  .burger span{ width:22px; height:1px; background:var(--fg); }
+
+  .hero{
+    min-height:100svh; display:flex; flex-direction:column; justify-content:center;
+    padding:120px var(--pad) 60px; position:relative; border-top:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 0%, rgba(242,194,0,.08), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, #0d0d0f 100%);
+  }
+  .hero::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:44px;
+    background-image: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 24px);
+    display:none;
+  }
+  @media(min-width:900px){ .hero::before{ display:block; } }
+
+  .hero-grid{ display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; }
+  .hero-title{ font-size:clamp(64px,13vw,168px); }
+  .hero-title small{ display:block; font-family:var(--mono); font-size:clamp(14px,2vw,18px); letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:18px; }
+  .hero-tagline{ margin-top:24px; max-width:46ch; color:var(--muted); font-size:16px; }
+  .hero-actions{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    padding:15px 26px; border:1px solid var(--line-strong); cursor:pointer; background:none; color:var(--fg);
+    transition:.2s; display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-solid{ background:var(--accent); color:#0a0a0b; border-color:var(--accent); font-weight:600; }
+  .btn-solid:hover{ background:transparent; color:var(--accent); }
+
+  .vinyl{
+    width:clamp(140px,18vw,260px); aspect-ratio:1; border-radius:50%; position:relative; justify-self:center;
+    background: repeating-radial-gradient(circle at center, #1c1c1e 0 2px, #141416 2px 4px);
+    box-shadow:0 0 0 1px var(--line), 0 30px 60px -20px rgba(0,0,0,.7);
+    animation:spin 6s linear infinite; animation-play-state:paused;
+  }
+  .vinyl.spinning{ animation-play-state:running; }
+  .vinyl::before{ content:''; position:absolute; inset:40%; border-radius:50%; background:var(--accent); }
+  .vinyl::after{ content:''; position:absolute; inset:47%; border-radius:50%; background:#0a0a0b; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .hero-meta{ display:flex; gap:32px; margin-top:56px; font-family:var(--mono); font-size:12px; color:var(--muted); flex-wrap:wrap; }
+  .hero-meta b{ color:var(--fg); display:block; font-size:20px; font-family:var(--body); font-weight:600; }
+
+  .scroll-hint{ position:absolute; bottom:28px; left:var(--pad); font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; display:flex; align-items:center; gap:10px; }
+  .scroll-hint::after{ content:''; width:1px; height:34px; background:linear-gradient(var(--accent), transparent); animation:pulse 1.8s ease infinite; }
+  @keyframes pulse{ 0%,100%{opacity:.3} 50%{opacity:1} }
+
+  .bio-grid{ display:grid; grid-template-columns:.8fr 1.2fr; gap:56px; align-items:start; }
+  @media(max-width:800px){ .bio-grid{ grid-template-columns:1fr; } }
+  .ph{
+    background: repeating-linear-gradient(135deg, var(--bg-raise) 0 2px, var(--bg-alt) 2px 14px);
+    border:1px dashed var(--line-strong);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    padding:20px; position:relative; overflow:hidden;
+  }
+  .media{ object-fit:cover; width:100%; height:100%; }
+  .bio-photo, .bio-photo img{ aspect-ratio:4/5; }
+  .bio-text p{ color:var(--muted); margin-bottom:16px; font-size:15.5px; max-width:60ch; }
+  .bio-text p b{ color:var(--fg); font-weight:600; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:36px; border:1px solid var(--line); }
+  .stat{ background:var(--bg); padding:20px; }
+  .stat b{ font-family:var(--display); font-size:36px; display:block; color:var(--accent); }
+  .stat span{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+
+  .gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+  @media(max-width:800px){ .gallery{ grid-template-columns:repeat(2,1fr); } }
+  .gallery-item{ aspect-ratio:1; cursor:pointer; transition:.25s; overflow:hidden; }
+  .gallery-item.ph:hover{ background:var(--accent-dim); border-color:var(--accent); color:var(--fg); }
+  .gallery-item:nth-child(3n+1){ aspect-ratio:1/1.3; }
+  .gallery-item img{ width:100%; height:100%; object-fit:cover; transition:.3s; }
+  .gallery-item:hover img{ transform:scale(1.04); }
+
+  .video-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:800px){ .video-grid{ grid-template-columns:1fr; } }
+  .video-card{ cursor:pointer; }
+  .video-thumb{ aspect-ratio:16/9; position:relative; }
+  .play-ring{ width:56px; height:56px; border:1px solid var(--fg); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.2s; }
+  .video-card:hover .play-ring{ background:var(--accent); border-color:var(--accent); }
+  .play-ring::after{ content:''; width:0; height:0; border-left:12px solid currentColor; border-top:7px solid transparent; border-bottom:7px solid transparent; margin-left:3px; }
+  .video-card:hover .play-ring::after{ color:#0a0a0b; }
+  .video-meta{ display:flex; justify-content:space-between; margin-top:10px; font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; }
+
+  .track-list{ border-top:1px solid var(--line); }
+  .track{ display:grid; grid-template-columns:32px 1fr auto auto; gap:18px; align-items:center; padding:18px 4px; border-bottom:1px solid var(--line); cursor:pointer; transition:.15s; }
+  .track:hover{ background:var(--bg-alt); }
+  .track.playing{ background:var(--accent-dim); }
+  .track-idx{ font-family:var(--mono); color:var(--muted); font-size:13px; }
+  .track.playing .track-idx{ color:var(--accent); }
+  .track-info b{ font-weight:600; font-size:15px; display:block; }
+  .track-info span{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .track-tag{ font-family:var(--mono); font-size:11px; color:var(--muted); border:1px solid var(--line-strong); padding:4px 10px; text-transform:uppercase; white-space:nowrap; }
+  .track-dur{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+
+  .player-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:100;
+    background:rgba(10,10,11,.94); backdrop-filter:blur(14px);
+    border-top:1px solid var(--line-strong);
+    display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:24px;
+    padding:12px var(--pad);
+    transform:translateY(100%); transition:transform .4s ease;
+  }
+  .player-bar.active{ transform:translateY(0); }
+  .p-transport{ display:flex; align-items:center; gap:14px; }
+  .p-btn{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
+  .p-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .p-btn.play-toggle{ width:44px; height:44px; background:var(--accent); color:#0a0a0b; border-color:var(--accent); }
+  .p-info{ overflow:hidden; }
+  .p-title{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; margin-bottom:8px; }
+  .p-progress{ display:flex; align-items:center; gap:10px; }
+  .p-time{ font-family:var(--mono); font-size:10px; color:var(--muted); width:34px; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:2px; background:var(--line-strong); outline:none; cursor:pointer; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:11px; height:11px; border-radius:50%; background:var(--accent); cursor:pointer; }
+  input[type=range]::-moz-range-thumb{ width:11px; height:11px; border-radius:50%; background:var(--accent); border:none; cursor:pointer; }
+  .p-vol{ display:flex; align-items:center; gap:10px; width:110px; }
+  .p-vol input{ width:80px; }
+  @media(max-width:700px){ .p-vol{ display:none; } .player-bar{ grid-template-columns:auto 1fr; padding:10px var(--pad); } }
+
+  .release-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  @media(max-width:800px){ .release-grid{ grid-template-columns:repeat(2,1fr); } }
+  .release .ph, .release .media-wrap{ aspect-ratio:1; margin-bottom:12px; overflow:hidden; }
+  .release .media-wrap img{ width:100%; height:100%; object-fit:cover; }
+  .release b{ display:block; font-size:14px; font-weight:600; }
+  .release span{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; }
+
+  .press-strip{ display:flex; flex-wrap:wrap; gap:40px; align-items:center; opacity:.75; }
+  .press-strip .ph, .press-strip img{ height:34px; width:130px; font-size:9px; object-fit:contain; }
+  .quote{ font-family:var(--display); font-size:clamp(24px,3.4vw,38px); text-transform:none; line-height:1.25; max-width:20ch; margin-bottom:16px; }
+  .quote-src{ font-family:var(--mono); font-size:12px; color:var(--accent); text-transform:uppercase; }
+
+  .booking-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  @media(max-width:800px){ .booking-grid{ grid-template-columns:1fr; } }
+  .contact-list a{ display:flex; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:13px; text-transform:uppercase; color:var(--muted); transition:.2s; }
+  .contact-list a:hover{ color:var(--accent); }
+  .rider-box{ border:1px solid var(--line); padding:28px; }
+  .rider-box h3{ font-size:28px; margin-bottom:12px; }
+  .rider-box p{ color:var(--muted); font-size:14px; margin-bottom:20px; }
+
+  footer{ padding:40px var(--pad) 140px; border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+
+  .modal{ position:fixed; inset:0; background:rgba(6,6,7,.94); z-index:200; display:none; align-items:center; justify-content:center; padding:var(--pad); }
+  .modal.open{ display:flex; }
+  .modal-close{ position:absolute; top:24px; right:var(--pad); background:none; border:1px solid var(--line-strong); color:var(--fg); width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:18px; }
+  .modal-close:hover{ border-color:var(--accent); color:var(--accent); }
+  .modal-body{ width:100%; max-width:920px; }
+  .modal-body iframe{ width:100%; aspect-ratio:16/9; border:0; }
+  .modal-body img{ width:100%; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+
+  @media(max-width:800px){
+    .nav-links, .nav-cta{ display:none; }
+    .burger{ display:flex; }
+    section{ padding:64px var(--pad); }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<nav id="nav">
+  <a href="#top" class="logo">DJ <span id="navLogo">NOMBRE</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#bio">Bio</a>
+    <a href="#fotos">Fotos</a>
+    <a href="#videos">Videos</a>
+    <a href="#mixes">Mixes</a>
+    <a href="#discografia">Discografía</a>
+    <a href="#booking">Booking</a>
+  </div>
+  <a href="#booking" class="nav-cta">Contratar</a>
+  <button class="burger" id="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-title"><small id="heroKicker"></small><span id="heroTitle1"></span><br><span id="heroTitle2"></span></h1>
+      <p class="hero-tagline" id="heroTagline"></p>
+      <div class="hero-actions">
+        <button class="btn btn-solid" id="heroPlay">▶ Escuchar mix</button>
+        <a href="#booking" class="btn">Booking &amp; contacto</a>
+      </div>
+      <div class="hero-meta" id="heroMeta"></div>
+    </div>
+    <div class="vinyl" id="heroVinyl"></div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</header>
+
+<section id="bio">
+  <div class="bio-grid">
+    <div id="bioPhoto"></div>
+    <div class="bio-text">
+      <div class="eyebrow">Biografía</div>
+      <h2 style="font-size:clamp(30px,4vw,46px); margin-bottom:20px;">Quién está detrás<br>de los platos</h2>
+      <div id="bioParagraphs"></div>
+      <div class="stat-row" id="bioStats"></div>
+    </div>
+  </div>
+</section>
+
+<section id="fotos">
+  <div class="section-head">
+    <div class="eyebrow">Prensa</div>
+    <h2>Fotos</h2>
+    <p>Banco de imágenes en alta resolución para prensa, promotores y redes. Haz clic para ampliar.</p>
+  </div>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<section id="videos">
+  <div class="section-head">
+    <div class="eyebrow">Sets en vivo</div>
+    <h2>Videos</h2>
+    <p>Grabaciones de sets, aftermovies y clips de festivales. Reproductor dinámico embebido de YouTube.</p>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+</section>
+
+<section id="mixes">
+  <div class="section-head">
+    <div class="eyebrow">Escucha</div>
+    <h2>Mixes</h2>
+    <p>Reproductor propio: haz clic en cualquier pista para cargarla en la barra inferior.</p>
+  </div>
+  <div class="track-list" id="trackList"></div>
+</section>
+
+<section id="discografia">
+  <div class="section-head">
+    <div class="eyebrow">Releases</div>
+    <h2>Discografía</h2>
+    <p>Lanzamientos propios y remixes. Enlaza cada portada a Bandcamp, Beatport o Spotify.</p>
+  </div>
+  <div class="release-grid" id="releaseGrid"></div>
+</section>
+
+<section id="prensa">
+  <div class="section-head">
+    <div class="eyebrow">Reconocimiento</div>
+    <h2>Prensa &amp; menciones</h2>
+  </div>
+  <p class="quote" id="pressQuote"></p>
+  <div class="quote-src" id="pressSource"></div>
+  <div class="press-strip" id="pressLogos" style="margin-top:40px;"></div>
+</section>
+
+<section id="booking">
+  <div class="section-head">
+    <div class="eyebrow">Contacto</div>
+    <h2>Booking</h2>
+    <p>Para fechas, rider técnico completo y consultas de prensa.</p>
+  </div>
+  <div class="booking-grid">
+    <div class="contact-list" id="bookingList"></div>
+    <div class="rider-box">
+      <h3>Rider técnico</h3>
+      <p id="riderText"></p>
+      <a href="#" class="btn" id="riderLink">Descargar rider (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span id="footerText"></span>
+  <span>Press kit construido a mano — sin plantillas.</span>
+</footer>
+
+<div class="modal" id="modal">
+  <button class="modal-close" id="modalClose">✕</button>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+
+<div class="player-bar" id="playerBar">
+  <div class="p-transport">
+    <button class="p-btn" id="prevBtn" aria-label="Anterior">⏮</button>
+    <button class="p-btn play-toggle" id="playToggle" aria-label="Reproducir">▶</button>
+    <button class="p-btn" id="nextBtn" aria-label="Siguiente">⏭</button>
+  </div>
+  <div class="p-info">
+    <div class="p-title" id="pTitle">Selecciona una pista</div>
+    <div class="p-progress">
+      <span class="p-time" id="pCur">0:00</span>
+      <input type="range" id="pSeek" value="0" min="0" max="100" step="0.1">
+      <span class="p-time" id="pDur">0:00</span>
+    </div>
+  </div>
+  <div class="p-vol">
+    <span style="font-family:var(--mono); font-size:10px; color:var(--muted);">VOL</span>
+    <input type="range" id="pVol" min="0" max="1" step="0.01" value="0.8">
+  </div>
+</div>
+<audio id="audioEl"></audio>
+
+<script>
+/* =========================================================
+   Todo el contenido de esta página se lee de content.json.
+   Para editarlo, usa el panel /admin en vez de tocar este archivo.
+   ========================================================= */
+
+let DATA = null;
+let TRACKS = [];
+
+const ph = (label, cls='') => `<div class="ph ${cls}">${label}</div>`;
+const imgOr = (url, label, cls='') => url
+  ? `<img class="media ${cls}" src="${url}" alt="${label}">`
+  : ph(label, cls);
+
+fetch('content.json?_=' + Date.now())
+  .then(r => r.json())
+  .then(data => { DATA = data; render(data); })
+  .catch(() => {
+    document.body.innerHTML = '<p style="padding:40px;font-family:monospace;color:#ECEAE4;">No se pudo cargar content.json. Verifica que el archivo exista junto a index.html.</p>';
+  });
+
+function render(d){
+  document.getElementById('heroKicker').textContent = d.hero.kicker;
+  document.getElementById('heroTitle1').textContent = d.hero.title_line1;
+  document.getElementById('heroTitle2').textContent = d.hero.title_line2;
+  document.getElementById('heroTagline').textContent = d.hero.tagline;
+  document.getElementById('navLogo').textContent = d.hero.title_line2;
+  document.title = `DJ ${d.hero.title_line2} — Press Kit`;
+  document.getElementById('heroMeta').innerHTML = d.hero.stats.map(s =>
+    `<div><b>${s.value}</b>${s.label}</div>`).join('');
+
+  document.getElementById('bioPhoto').innerHTML = imgOr(d.bio.photo, 'FOTO PRINCIPAL — sube tu retrato en /admin', 'bio-photo');
+  document.getElementById('bioParagraphs').innerHTML = d.bio.paragraphs.map(p =>
+    `<p>${p.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</p>`).join('');
+  document.getElementById('bioStats').innerHTML = d.bio.stats.map(s =>
+    `<div class="stat"><b>${s.value}</b><span>${s.label}</span></div>`).join('');
+
+  document.getElementById('gallery').innerHTML = d.gallery.map((g,i) =>
+    `<div class="gallery-item ph" data-idx="${i}">${imgOr(g.image, g.alt)}</div>`).join('');
+
+  document.getElementById('videoGrid').innerHTML = d.videos.map(v => `
+    <div class="video-card" data-video="${v.youtube_id}">
+      <div class="ph video-thumb"><div class="play-ring"></div></div>
+      <div class="video-meta"><span>${v.title}</span><span>${v.year}</span></div>
+    </div>`).join('');
+
+  TRACKS = d.tracks;
+  renderTrackList();
+
+  document.getElementById('releaseGrid').innerHTML = d.releases.map(r => `
+    <a class="release" href="${r.url || '#'}">
+      <div class="media-wrap ph">${imgOr(r.image, 'PORTADA')}</div>
+      <b>${r.title}</b><span>${r.label_name} — ${r.year}</span>
+    </a>`).join('');
+
+  document.getElementById('pressQuote').textContent = `"${d.press.quote}"`;
+  document.getElementById('pressSource').textContent = `— ${d.press.source}`;
+  document.getElementById('pressLogos').innerHTML = d.press.logos.map(l =>
+    imgOr(l.image, l.alt)).join('');
+
+  const b = d.booking;
+  document.getElementById('bookingList').innerHTML = `
+    <a href="mailto:${b.email}">Email <span>${b.email}</span></a>
+    <a href="https://instagram.com/${(b.instagram||'').replace('@','')}" target="_blank">Instagram <span>${b.instagram}</span></a>
+    <a href="https://soundcloud.com${b.soundcloud}" target="_blank">SoundCloud <span>${b.soundcloud}</span></a>
+    <a href="#">WhatsApp / Agencia <span>${b.whatsapp}</span></a>`;
+  document.getElementById('riderText').textContent = b.rider_text;
+  const riderLink = document.getElementById('riderLink');
+  if (b.rider_pdf){ riderLink.href = b.rider_pdf; riderLink.target = '_blank'; }
+
+  document.getElementById('footerText').textContent = d.footer.text;
+
+  initInteractions();
+}
+
+function initInteractions(){
+  document.getElementById('gallery').addEventListener('click', (e) => {
+    const item = e.target.closest('.gallery-item');
+    if(!item) return;
+    const g = DATA.gallery[item.dataset.idx];
+    openImageModal(g.image, g.alt);
+  });
+
+  document.getElementById('videoGrid').addEventListener('click', (e) => {
+    const card = e.target.closest('.video-card');
+    if(!card) return;
+    openVideoModal(card.dataset.video);
+  });
+
+  document.querySelectorAll('section, .release, .video-card').forEach(el => el.classList.add('reveal'));
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); revealIO.unobserve(en.target); } });
+  }, { threshold:.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+}
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => {
+  const open = navLinks.style.display === 'flex';
+  navLinks.style.cssText = open ? '' : 'display:flex; flex-direction:column; position:fixed; top:64px; right:20px; background:#141416; border:1px solid var(--line); padding:20px 28px; gap:18px;';
+});
+
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a');
+const navIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id)); });
+}, { rootMargin:'-40% 0px -50% 0px' });
+sections.forEach(s => navIO.observe(s));
+
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modalBody');
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+
+function closeModal(){ modal.classList.remove('open'); modalBody.innerHTML = ''; }
+function openImageModal(url, label){
+  modalBody.innerHTML = url ? `<img src="${url}" alt="${label}">` : `<div class="ph" style="aspect-ratio:4/3;">${label} — sube esta imagen en /admin</div>`;
+  modal.classList.add('open');
+}
+function openVideoModal(videoId){
+  modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="Video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  modal.classList.add('open');
+}
+
+const audio = document.getElementById('audioEl');
+const playerBar = document.getElementById('playerBar');
+const playToggle = document.getElementById('playToggle');
+const pTitle = document.getElementById('pTitle');
+const pSeek = document.getElementById('pSeek');
+const pCur = document.getElementById('pCur');
+const pDur = document.getElementById('pDur');
+const pVol = document.getElementById('pVol');
+const heroVinyl = document.getElementById('heroVinyl');
+let currentIndex = -1;
+
+function fmt(t){
+  if(!isFinite(t)) return '0:00';
+  const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function renderTrackList(){
+  const list = document.getElementById('trackList');
+  list.innerHTML = TRACKS.map((t,i) => `
+    <div class="track" data-index="${i}">
+      <span class="track-idx">${String(i+1).padStart(2,'0')}</span>
+      <div class="track-info"><b>${t.title}</b><span>${t.tag}</span></div>
+      <span class="track-tag">Escuchar</span>
+      <span class="track-dur">${t.dur}</span>
+    </div>`).join('');
+  list.querySelectorAll('.track').forEach(row => {
+    row.addEventListener('click', () => loadTrack(parseInt(row.dataset.index)));
+  });
+}
+
+function loadTrack(i){
+  currentIndex = (i + TRACKS.length) % TRACKS.length;
+  const t = TRACKS[currentIndex];
+  pTitle.textContent = `${t.title} — ${t.tag}`;
+  document.querySelectorAll('.track').forEach(r => r.classList.toggle('playing', parseInt(r.dataset.index) === currentIndex));
+  playerBar.classList.add('active');
+
+  if(!t.src){
+    pTitle.textContent = `${t.title} — sube el archivo de audio en /admin`;
+    audio.pause();
+    playToggle.textContent = '▶';
+    heroVinyl.classList.remove('spinning');
+    return;
+  }
+  audio.src = t.src;
+  audio.play();
+}
+
+playToggle.addEventListener('click', () => {
+  if(currentIndex === -1){ loadTrack(0); return; }
+  if(!TRACKS[currentIndex].src) return;
+  audio.paused ? audio.play() : audio.pause();
+});
+document.getElementById('nextBtn').addEventListener('click', () => loadTrack(currentIndex + 1));
+document.getElementById('prevBtn').addEventListener('click', () => loadTrack(currentIndex - 1));
+document.getElementById('heroPlay').addEventListener('click', () => {
+  document.getElementById('mixes').scrollIntoView({behavior:'smooth'});
+  if(currentIndex === -1) loadTrack(0);
+});
+
+audio.addEventListener('play', () => { playToggle.textContent = '❚❚'; heroVinyl.classList.add('spinning'); });
+audio.addEventListener('pause', () => { playToggle.textContent = '▶'; heroVinyl.classList.remove('spinning'); });
+audio.addEventListener('ended', () => loadTrack(currentIndex + 1));
+audio.addEventListener('timeupdate', () => {
+  pSeek.value = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+  pCur.textContent = fmt(audio.currentTime);
+  pDur.textContent = fmt(audio.duration);
+});
+pSeek.addEventListener('input', () => { if(audio.duration) audio.currentTime = (pSeek.value/100) * audio.duration; });
+pVol.addEventListener('input', () => audio.volume = pVol.value);
+audio.volume = pVol.value;
+</script>
+</body>
+</html>
