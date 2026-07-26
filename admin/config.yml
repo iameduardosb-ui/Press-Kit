@@ -37,7 +37,14 @@ collections:
             name: "hero"
             widget: "object"
             fields:
-              - { label: "Texto pequeño superior", name: "kicker", widget: "string" }
+              - { label: "Texto previo (ej. Press Kit —)", name: "kicker_prefix", widget: "string" }
+              - label: "Géneros (clicables, cada uno con su BPM)"
+                name: "genres"
+                widget: "list"
+                hint: "El primero de la lista es el que se muestra al cargar la página. Agrega o quita los que quieras."
+                fields:
+                  - { label: "Nombre del género", name: "name", widget: "string" }
+                  - { label: "Rango de BPM", name: "bpm", widget: "string", hint: "ej. 135 - 145 BPM" }
               - { label: "Título línea 1 (ej. DJ)", name: "title_line1", widget: "string" }
               - { label: "Título línea 2 (tu nombre)", name: "title_line2", widget: "string" }
               - { label: "Frase / tagline", name: "tagline", widget: "text" }
