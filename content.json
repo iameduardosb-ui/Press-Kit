@@ -50,9 +50,9 @@
   "bio": {
     "photo": "",
     "paragraphs": [
-      "**Tu nombre** es DJ y productor/a de techno y house con base en ciudad, país. Reemplaza este párrafo con tu historia: cómo empezaste, qué sellos o colectivos te formaron, y qué caracteriza tu selección musical.",
-      "Ha tocado en nombres de clubs y festivales, compartiendo cabina con artistas relevantes. Su estilo combina groove, texturas y referencias propias.",
-      "Un párrafo corto sobre producción propia, sellos en los que ha lanzado música, o proyectos paralelos, si aplica."
+      "DJ y productor de Techno, Groove y Melodic. Nací musicalmente en Valledupar, donde aprendí a mover las pistas con energía callejera. Un viaje a Medellín me conectó con el Techno, y ahora en Pereira, creo sonidos oscuros y melódicos que te llevan a un viaje underground. Mi música es para los que buscan ritmos intensos, texturas profundas y melodías que te atrapan.",
+      "Ha compartido música en fiestas privadas, creando ambientes únicos con un estilo que combina groove, texturas y referencias propias. Su sonido es una mezcla de energía underground y melodías que te atrapan.",
+      "Estoy trabajando en mi propio sonido, con planes de lanzar música en plataformas digitales"
     ],
     "stats": [
       {
@@ -151,10 +151,10 @@
     }
   ],
   "booking": {
-    "email": "booking@tudominio.com",
-    "instagram": "@tuusuario",
+    "email": "iameduardosb@gmail.com",
+    "instagram": "@LilEduaar",
     "soundcloud": "/tuusuario",
-    "whatsapp": "+00 000 000 000",
+    "whatsapp": "+57 350 737 9540",
     "rider_text": "Especificaciones de equipo (mesa de mezclas, reproductores, monitoreo) para promotores. Sube tu PDF y enlázalo aquí.",
     "rider_pdf": ""
   },
@@ -162,7 +162,7 @@
     "kicker": "Press Kit — Techno / Groove / Melodic",
     "title_line1": "DJ",
     "title_line2": "EDUAAR",
-    "tagline": "Una línea que describa tu sonido: dónde nace, qué lo mueve y qué encuentra el público en la pista cuando estás detrás de los platos.",
+    "tagline": "Mi sonido nace en las calles de Valledupar cuando todo era un caos, nace mi sonido, un sonido que para muchos es solo ruido pero para esas personas que tienen un oido fino es melodía y techno puro, un sonido hecho para esas personas que quieren pasarla bien y olvidarse de todo \n",
     "stats": [
       {
         "value": "4",
@@ -173,7 +173,7 @@
         "label": "Activo desde"
       },
       {
-        "value": "137 - 143 BPM",
+        "value": "137 - 144 BPM",
         "label": "Rango habitual"
       }
     ]
