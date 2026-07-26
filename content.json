@@ -69,36 +69,7 @@
       }
     ]
   },
-  "releases": [
-    {
-      "title": "Nombre del track / EP",
-      "label_name": "Sello",
-      "year": "2026",
-      "url": "#",
-      "image": ""
-    },
-    {
-      "title": "Nombre del track / EP",
-      "label_name": "Sello",
-      "year": "2025",
-      "url": "#",
-      "image": ""
-    },
-    {
-      "title": "Nombre del track / EP",
-      "label_name": "Sello",
-      "year": "2025",
-      "url": "#",
-      "image": ""
-    },
-    {
-      "title": "Nombre del track / EP",
-      "label_name": "Sello",
-      "year": "2024",
-      "url": "#",
-      "image": ""
-    }
-  ],
+  "releases": [],
   "gallery": [
     {
       "image": "",
@@ -179,6 +150,6 @@
     ]
   },
   "footer": {
-    "text": "© 2026 DJ NOMBRE. Todos los derechos reservados."
+    "text": "© 2026 Eduaar. Todos los derechos reservados."
   }
 }
