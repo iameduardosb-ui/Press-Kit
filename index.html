@@ -490,8 +490,10 @@ function render(d){
     `<div class="gallery-item ph" data-idx="${i}">${imgOr(g.image, g.alt)}</div>`).join('');
 
   document.getElementById('videoGrid').innerHTML = d.videos.map(v => `
-    <div class="video-card" data-url="${v.url}">
-      <div class="ph video-thumb"><div class="play-ring"></div></div>
+    <div class="video-card" data-url="${v.url || ''}">
+      ${v.url
+        ? `<div class="ph video-thumb"><div class="play-ring"></div></div>`
+        : `<div class="ph video-thumb">Agrega el link de este video en /admin</div>`}
       <div class="video-meta"><span>${v.title}</span><span>${v.year}</span></div>
     </div>`).join('');
 
@@ -535,7 +537,7 @@ function initInteractions(){
 
   document.getElementById('videoGrid').addEventListener('click', (e) => {
     const card = e.target.closest('.video-card');
-    if(!card) return;
+    if(!card || !card.dataset.url) return;
     openVideoModal(card.dataset.url);
   });
 
