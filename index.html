@@ -13,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+<!-- Netlify Identity: necesario para que los links de invitación / recuperar contraseña funcionen -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
 <style>
   :root{
     --bg:#0a0a0b;
@@ -389,6 +392,16 @@
    Todo el contenido de esta página se lee de content.json.
    Para editarlo, usa el panel /admin en vez de tocar este archivo.
    ========================================================= */
+
+/* Si llegas aquí desde un link de invitación o de "olvidé mi contraseña",
+   esto abre el cuadro de Netlify Identity y te manda al panel al terminar. */
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on('init', user => {
+    if (!user) {
+      window.netlifyIdentity.on('login', () => { document.location.href = '/admin/'; });
+    }
+  });
+}
 
 let DATA = null;
 let TRACKS = [];
