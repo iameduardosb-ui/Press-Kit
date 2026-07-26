@@ -441,8 +441,8 @@ function applyTheme(settings){
 }
 function applySectionVisibility(sections){
   if(!sections) return;
-  Object.keys(sections).forEach(key => {
-    const visible = sections[key] !== false;
+  ['bio','fotos','videos','mixes','discografia','prensa','booking'].forEach(key => {
+    const visible = !!sections[key];
     const el = document.getElementById(key);
     if(el) el.style.display = visible ? '' : 'none';
     document.querySelectorAll(`.nav-links a[href="#${key}"]`).forEach(a => {
