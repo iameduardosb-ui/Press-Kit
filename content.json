@@ -49,15 +49,15 @@
     ],
     "stats": [
       {
-        "value": "00",
+        "value": "06",
         "label": "Años activo"
       },
       {
-        "value": "00",
+        "value": "01",
         "label": "Festivales"
       },
       {
-        "value": "00",
+        "value": "03",
         "label": "Releases"
       }
     ]
@@ -69,32 +69,20 @@
       "alt": "Foto 1"
     },
     {
-      "image": "",
+      "image": "images/img_2133.jpg",
       "alt": "Foto 2"
     },
     {
-      "image": "",
+      "image": "images/img_2120.jpg",
       "alt": "Foto 3"
     },
     {
-      "image": "",
+      "image": "images/9b9f26d6-f2a9-4865-b6cb-bd591fde96bf.jpg",
       "alt": "Foto 4"
     },
     {
-      "image": "",
+      "image": "images/e168a8e8-3738-4f62-a6c0-bbff972e1530-2.jpg",
       "alt": "Foto 5"
-    },
-    {
-      "image": "",
-      "alt": "Foto 6"
-    },
-    {
-      "image": "",
-      "alt": "Foto 7"
-    },
-    {
-      "image": "",
-      "alt": "Foto 8"
     }
   ],
   "videos": [
@@ -153,7 +141,8 @@
         "name": "Groove",
         "bpm": "137 - 142 BM"
       }
-    ]
+    ],
+    "kicker_prefix": ""
   },
   "footer": {
     "text": "© 2026 Eduaar. Todos los derechos reservados."
