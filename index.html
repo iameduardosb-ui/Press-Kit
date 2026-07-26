@@ -106,6 +106,10 @@
   .hero-grid{ display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; }
   .hero-title{ font-size:clamp(64px,13vw,168px); }
   .hero-title small{ display:block; font-family:var(--mono); font-size:clamp(14px,2vw,18px); letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:18px; }
+  .genre-pill{ cursor:pointer; opacity:.5; border-bottom:1px solid transparent; padding-bottom:2px; transition:opacity .2s, border-color .2s; }
+  .genre-pill:hover{ opacity:.85; }
+  .genre-pill.active{ opacity:1; border-color:currentColor; }
+  .slash{ opacity:.35; margin:0 2px; }
   .hero-tagline{ margin-top:24px; max-width:46ch; color:var(--muted); font-size:16px; }
   .hero-actions{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
   .btn{
@@ -468,17 +472,36 @@ fetch('content.json?_=' + Date.now())
     document.body.innerHTML = '<p style="padding:40px;font-family:monospace;color:#ECEAE4;">No se pudo cargar content.json. Verifica que el archivo exista junto a index.html.</p>';
   });
 
+function renderHeroGenres(d){
+  const kickerEl = document.getElementById('heroKicker');
+  const genres = d.hero.genres || [];
+  kickerEl.innerHTML = `${d.hero.kicker_prefix || ''} ` + genres.map((g,i) =>
+    `<span class="genre-pill${i===0?' active':''}" data-idx="${i}">${g.name}</span>`
+  ).join(' <span class="slash">/</span> ');
+
+  kickerEl.querySelectorAll('.genre-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      kickerEl.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const g = genres[pill.dataset.idx];
+      const bpmEl = document.getElementById('bpmValue');
+      if(bpmEl && g) bpmEl.textContent = g.bpm;
+    });
+  });
+}
+
 function render(d){
   applyTheme(d.settings);
 
-  document.getElementById('heroKicker').textContent = d.hero.kicker;
+  renderHeroGenres(d);
   document.getElementById('heroTitle1').textContent = d.hero.title_line1;
   document.getElementById('heroTitle2').textContent = d.hero.title_line2;
   document.getElementById('heroTagline').textContent = d.hero.tagline;
   document.getElementById('navLogo').textContent = d.hero.title_line2;
   document.title = `DJ ${d.hero.title_line2} — Press Kit`;
   document.getElementById('heroMeta').innerHTML = d.hero.stats.map(s =>
-    `<div><b>${s.value}</b>${s.label}</div>`).join('');
+    `<div><b>${s.value}</b>${s.label}</div>`).join('') +
+    `<div><b id="bpmValue">${(d.hero.genres && d.hero.genres[0]) ? d.hero.genres[0].bpm : ''}</b>Rango habitual</div>`;
 
   document.getElementById('bioPhoto').innerHTML = imgOr(d.bio.photo, 'FOTO PRINCIPAL — sube tu retrato en /admin', 'bio-photo');
   document.getElementById('bioParagraphs').innerHTML = d.bio.paragraphs.map(p =>
