@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eduaar— Press Kit</title>
+<title>DJ NOMBRE — Press Kit</title>
 <meta name="description" content="Press kit oficial de DJ NOMBRE. Techno / House. Fotos, videos, mixes y booking.">
-<meta property="og:title" content="Eduaar — Press Kit">
+<meta property="og:title" content="DJ NOMBRE — Press Kit">
 <meta property="og:description" content="Techno / House. Fotos, videos, mixes y booking.">
 <meta property="og:type" content="website">
 
@@ -96,12 +96,14 @@
       radial-gradient(ellipse 80% 60% at 15% 0%, rgba(242,194,0,.08), transparent 60%),
       linear-gradient(180deg, var(--bg) 0%, #0d0d0f 100%);
   }
-  .hero::before{
-    content:''; position:absolute; left:0; top:0; bottom:0; width:44px;
+  .side-ruler{
+    position:fixed; top:0; bottom:0; width:28px; z-index:5; pointer-events:none; opacity:.6;
     background-image: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 24px);
     display:none;
   }
-  @media(min-width:900px){ .hero::before{ display:block; } }
+  .side-ruler.left{ left:0; }
+  .side-ruler.right{ right:0; }
+  @media(min-width:900px){ .side-ruler{ display:block; } }
 
   .hero-grid{ display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; }
   .hero-title{ font-size:clamp(64px,13vw,168px); }
@@ -264,6 +266,8 @@
 <body>
 
 <div class="noise"></div>
+<div class="side-ruler left"></div>
+<div class="side-ruler right"></div>
 
 <nav id="nav">
   <a href="#top" class="logo">DJ <span id="navLogo">NOMBRE</span></a>
@@ -485,7 +489,7 @@ function resolveEmbedSrc(url){
 
 fetch('content.json?_=' + Date.now())
   .then(r => r.json())
-  .then(data => { DATA = data; render(data); })
+  .then(data => { DATA = data; render(data); autoplayFirstVideo(); })
   .catch(() => {
     document.body.innerHTML = '<p style="padding:40px;font-family:monospace;color:#ECEAE4;">No se pudo cargar content.json. Verifica que el archivo exista junto a index.html.</p>';
   });
@@ -668,7 +672,15 @@ function ensureYtPlayer(cb){
   else { const wait = setInterval(() => { if(ytReady){ clearInterval(wait); init(); } }, 150); }
 }
 function onYtStateChange(e){
-  if(e.data === YT.PlayerState.PLAYING){ setPlayIcon(true); startProgressTimer(); }
+  if(e.data === YT.PlayerState.PLAYING){
+    setPlayIcon(true); startProgressTimer();
+    if(pendingUnmute){
+      ytPlayer.unMute();
+      ytPlayer.setVolume(50);
+      pVol.value = 0.5;
+      pendingUnmute = false;
+    }
+  }
   else if(e.data === YT.PlayerState.PAUSED){ setPlayIcon(false); stopProgressTimer(); }
   else if(e.data === YT.PlayerState.ENDED){ loadVideoTrack(currentVideoIndex + 1); }
 }
@@ -737,6 +749,38 @@ function loadTrack(i){
 }
 
 /* ---------- videos de YouTube ---------- */
+let pendingUnmute = false;
+
+function autoplayFirstVideo(){
+  if(!VIDEOS.length) return;
+  const idx = VIDEOS.findIndex(v => extractYouTubeId(v.url));
+  if(idx === -1) return;
+  currentVideoIndex = idx;
+  const v = VIDEOS[idx];
+  const ytId = extractYouTubeId(v.url);
+  engine = 'youtube';
+  audioIconLayer.style.display = 'none';
+  playerBar.classList.add('active');
+  setNowPlayingTitle(v.title, v.url);
+  ensureYtPlayer(() => {
+    ytPlayer.mute();
+    ytPlayer.loadVideoById(ytId);
+    ytPlayer.playVideo();
+    pendingUnmute = true;
+  });
+}
+// Si el navegador bloqueó el sonido, se activa con el primer clic/touch en la página
+document.addEventListener('click', tryUnmuteOnce, { once:false });
+document.addEventListener('touchstart', tryUnmuteOnce, { once:false });
+function tryUnmuteOnce(){
+  if(pendingUnmute && ytPlayer && ytPlayer.unMute){
+    ytPlayer.unMute();
+    ytPlayer.setVolume(50);
+    pVol.value = 0.5;
+    pendingUnmute = false;
+  }
+}
+
 function loadVideoTrack(i){
   if(!VIDEOS.length) return;
   currentVideoIndex = (i + VIDEOS.length) % VIDEOS.length;
