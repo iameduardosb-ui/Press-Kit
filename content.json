@@ -8,7 +8,7 @@
       "booking": true
     },
     "accent_color": "#757575",
-    "bg_color": "#ff0000"
+    "bg_color": "#0a0a0b"
   },
   "press": {
     "quote": "Cita corta de un medio, promotor o colega sobre tu música o tus sets.",
@@ -34,32 +34,14 @@
   },
   "tracks": [
     {
-      "title": "Nombre de la pista 01",
-      "tag": "Original Mix",
-      "dur": "6:32",
-      "src": ""
-    },
-    {
-      "title": "Nombre de la pista 02",
-      "tag": "Live set — extracto",
-      "dur": "8:10",
-      "src": ""
-    },
-    {
-      "title": "Nombre de la pista 03",
-      "tag": "Remix",
-      "dur": "5:48",
-      "src": ""
-    },
-    {
-      "title": "Nombre de la pista 04",
-      "tag": "Radio show",
-      "dur": "12:20",
-      "src": ""
+      "title": "Potaje Carcelario",
+      "tag": "Techno House",
+      "dur": "34:11",
+      "src": "https://soundcloud.com/lileduar/potaje-carcelario?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"
     }
   ],
   "bio": {
-    "photo": "",
+    "photo": "images/d9c1e457-1ef3-424c-bf46-94ad6631eff5.jpeg",
     "paragraphs": [
       "DJ y productor de Techno, Groove y Melodic. Nací musicalmente en Valledupar, donde aprendí a mover las pistas con energía callejera. Un viaje a Medellín me conectó con el Techno, y ahora en Pereira, creo sonidos oscuros y melódicos que te llevan a un viaje underground. Mi música es para los que buscan ritmos intensos, texturas profundas y melodías que te atrapan.",
       "Ha compartido música en fiestas privadas, creando ambientes únicos con un estilo que combina groove, texturas y referencias propias. Su sonido es una mezcla de energía underground y melodías que te atrapan.",
@@ -117,25 +99,28 @@
   ],
   "videos": [
     {
-      "title": "Set — Club, Ciudad",
+      "title": "Live Set Especial 20 Sub, Pereira",
       "year": "2026",
-      "youtube_id": "dQw4w9WgXcQ"
+      "youtube_id": "dQw4w9WgXcQ",
+      "url": "https://youtu.be/vLWBPt_COUQ"
     },
     {
-      "title": "Aftermovie — Festival",
-      "year": "2025",
-      "youtube_id": "dQw4w9WgXcQ"
+      "title": "Potaje Carcelario",
+      "year": "2026",
+      "youtube_id": "dQw4w9WgXcQ",
+      "url": "https://youtu.be/Ak9tzxvbzPA"
     },
     {
-      "title": "Boiler Room style set",
-      "year": "2025",
-      "youtube_id": "dQw4w9WgXcQ"
+      "title": "Afable",
+      "year": "2026",
+      "youtube_id": "dQw4w9WgXcQ",
+      "url": "https://youtu.be/46axZxIap2Q"
     }
   ],
   "booking": {
     "email": "iameduardosb@gmail.com",
     "instagram": "@LilEduaar",
-    "soundcloud": "/tuusuario",
+    "soundcloud": "/lileduar",
     "whatsapp": "+57 350 737 9540",
     "rider_text": "Especificaciones de equipo (mesa de mezclas, reproductores, monitoreo) para promotores. Sube tu PDF y enlázalo aquí.",
     "rider_pdf": "images/rider-técnico.pdf"
@@ -157,6 +142,16 @@
       {
         "value": "137 - 144 BPM",
         "label": "Rango habitual"
+      }
+    ],
+    "genres": [
+      {
+        "name": "House",
+        "bpm": "126 - 128 BPM"
+      },
+      {
+        "name": "Groove",
+        "bpm": "137 - 142 BM"
       }
     ]
   },
