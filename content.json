@@ -107,7 +107,24 @@
     "soundcloud": "/lileduar",
     "whatsapp": "+57 350 737 9540",
     "rider_text": "Especificaciones de equipo (mesa de mezclas, reproductores, monitoreo) para promotores. Sube tu PDF y enlázalo aquí.",
-    "rider_pdf": "images/rider-técnico.pdf"
+    "rider_pdf": "images/rider-técnico.pdf",
+    "links": [
+      {
+        "label": "INSTAGRAM",
+        "url": "https://www.instagram.com/lileduaar/",
+        "display": "@LilEduaar"
+      },
+      {
+        "label": "linktr",
+        "url": "https://linktr.ee/eduaar",
+        "display": "Eduaar"
+      },
+      {
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@lileduaar",
+        "display": "Eduaar"
+      }
+    ]
   },
   "hero": {
     "kicker": "Press Kit — Techno / Groove / Melodic",
