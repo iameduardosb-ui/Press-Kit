@@ -123,9 +123,14 @@ collections:
             widget: "object"
             fields:
               - { label: "Email", name: "email", widget: "string" }
-              - { label: "Instagram (@usuario)", name: "instagram", widget: "string" }
-              - { label: "SoundCloud (/usuario)", name: "soundcloud", widget: "string" }
-              - { label: "WhatsApp / Agencia", name: "whatsapp", widget: "string" }
+              - label: "Enlaces (redes, plataformas, lo que quieras)"
+                name: "links"
+                widget: "list"
+                hint: "Agrega tantos como quieras: Instagram, SoundCloud, WhatsApp, Beatport, TikTok, tu web, etc."
+                fields:
+                  - { label: "Nombre (ej. Instagram)", name: "label", widget: "string" }
+                  - { label: "Texto a mostrar (ej. @tuusuario)", name: "display", widget: "string", required: false, hint: "Si lo dejas vacío, se muestra el enlace completo" }
+                  - { label: "Enlace completo (URL)", name: "url", widget: "string", hint: "Para WhatsApp usa el formato https://wa.me/57XXXXXXXXXX" }
               - { label: "Texto del rider técnico", name: "rider_text", widget: "text" }
               - { label: "PDF del rider", name: "rider_pdf", widget: "file", required: false }
 
