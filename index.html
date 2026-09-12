@@ -56,6 +56,15 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  .side-ruler{
+    position:fixed; top:0; bottom:0; width:28px; z-index:5; pointer-events:none; opacity:.6;
+    background-image: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 24px);
+    display:none;
+  }
+  .side-ruler.left{ left:0; }
+  .side-ruler.right{ right:0; }
+  @media(min-width:900px){ .side-ruler{ display:block; } }
+
   .eyebrow{
     font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:14px;
@@ -96,14 +105,6 @@
       radial-gradient(ellipse 80% 60% at 15% 0%, rgba(242,194,0,.08), transparent 60%),
       linear-gradient(180deg, var(--bg) 0%, #0d0d0f 100%);
   }
-  .side-ruler{
-    position:fixed; top:0; bottom:0; width:28px; z-index:5; pointer-events:none; opacity:.6;
-    background-image: repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 24px);
-    display:none;
-  }
-  .side-ruler.left{ left:0; }
-  .side-ruler.right{ right:0; }
-  @media(min-width:900px){ .side-ruler{ display:block; } }
 
   .hero-grid{ display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; }
   .hero-title{ font-size:clamp(64px,13vw,168px); }
@@ -205,13 +206,13 @@
   .p-cover #ytMount{ position:absolute; inset:0; width:100%; height:100%; }
   .p-cover #ytMount iframe{ width:100%; height:100%; }
   #audioIconLayer{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:var(--bg-alt); color:var(--accent); font-size:18px; z-index:2; }
-  .p-title a{ color:inherit; }
-  .p-title a:hover{ text-decoration:underline; color:var(--accent); }
   .p-btn{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
   .p-btn:hover{ border-color:var(--accent); color:var(--accent); }
   .p-btn.play-toggle{ width:44px; height:44px; background:var(--accent); color:#0a0a0b; border-color:var(--accent); }
   .p-info{ overflow:hidden; }
   .p-title{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; margin-bottom:8px; }
+  .p-title a{ color:inherit; }
+  .p-title a:hover{ text-decoration:underline; color:var(--accent); }
   .p-progress{ display:flex; align-items:center; gap:10px; }
   .p-time{ font-family:var(--mono); font-size:10px; color:var(--muted); width:34px; }
   input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:2px; background:var(--line-strong); outline:none; cursor:pointer; }
@@ -235,7 +236,8 @@
 
   .booking-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
   @media(max-width:800px){ .booking-grid{ grid-template-columns:1fr; } }
-  .contact-list a{ display:flex; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:13px; text-transform:uppercase; color:var(--muted); transition:.2s; }
+  .contact-list a{ display:flex; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:13px; text-transform:uppercase; color:var(--muted); transition:.2s; }
+  .contact-list a span{ text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .contact-list a:hover{ color:var(--accent); }
   .rider-box{ border:1px solid var(--line); padding:28px; }
   .rider-box h3{ font-size:28px; margin-bottom:12px; }
@@ -324,7 +326,7 @@
   <div class="section-head">
     <div class="eyebrow">Sets en vivo</div>
     <h2>Videos</h2>
-    <p>Grabaciones de sets, aftermovies y clips de festivales. Reproductor dinámico embebido de YouTube.</p>
+    <p>Grabaciones de sets, aftermovies y clips de festivales. Los videos de YouTube se reproducen en la barra inferior.</p>
   </div>
   <div class="video-grid" id="videoGrid"></div>
 </section>
@@ -414,6 +416,15 @@
    Para editarlo, usa el panel /admin en vez de tocar este archivo.
    ========================================================= */
 
+let DATA = null;
+let TRACKS = [];
+let VIDEOS = [];
+
+const ph = (label, cls='') => `<div class="ph ${cls}">${label}</div>`;
+const imgOr = (url, label, cls='') => url
+  ? `<img class="media ${cls}" src="${url}" alt="${label}">`
+  : ph(label, cls);
+
 /* Si llegas aquí desde un link de invitación o de "olvidé mi contraseña",
    esto abre el cuadro de Netlify Identity y te manda al panel al terminar. */
 if (window.netlifyIdentity) {
@@ -423,14 +434,6 @@ if (window.netlifyIdentity) {
     }
   });
 }
-
-let DATA = null;
-let TRACKS = [];
-
-const ph = (label, cls='') => `<div class="ph ${cls}">${label}</div>`;
-const imgOr = (url, label, cls='') => url
-  ? `<img class="media ${cls}" src="${url}" alt="${label}">`
-  : ph(label, cls);
 
 /* ---------- tema de colores (editable desde /admin) ---------- */
 function hexToRgb(hex){
@@ -563,11 +566,10 @@ function render(d){
     imgOr(l.image, l.alt)).join('');
 
   const b = d.booking;
-  document.getElementById('bookingList').innerHTML = `
-    <a href="mailto:${b.email}">Email <span>${b.email}</span></a>
-    <a href="https://instagram.com/${(b.instagram||'').replace('@','')}" target="_blank">Instagram <span>${b.instagram}</span></a>
-    <a href="https://soundcloud.com${b.soundcloud}" target="_blank">SoundCloud <span>${b.soundcloud}</span></a>
-    <a href="#">WhatsApp / Agencia <span>${b.whatsapp}</span></a>`;
+  const extraLinks = (b.links || []).map(l =>
+    `<a href="${l.url}" target="_blank" rel="noopener">${l.label} <span>${l.display || l.url}</span></a>`).join('');
+  document.getElementById('bookingList').innerHTML =
+    `<a href="mailto:${b.email}">Email <span>${b.email}</span></a>` + extraLinks;
   document.getElementById('riderText').textContent = b.rider_text;
   const riderLink = document.getElementById('riderLink');
   if (b.rider_pdf){ riderLink.href = b.rider_pdf; riderLink.target = '_blank'; }
@@ -614,9 +616,9 @@ burger.addEventListener('click', () => {
 });
 
 const sections = document.querySelectorAll('section[id]');
-const links = document.querySelectorAll('.nav-links a');
+const navLinksAll = document.querySelectorAll('.nav-links a');
 const navIO = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id)); });
+  entries.forEach(e => { if(e.isIntersecting) navLinksAll.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id)); });
 }, { rootMargin:'-40% 0px -50% 0px' });
 sections.forEach(s => navIO.observe(s));
 
@@ -637,6 +639,7 @@ function openVideoModal(url){
   modal.classList.add('open');
 }
 
+/* ---------- reproductor unificado: audio (mp3) + YouTube ---------- */
 const audio = document.getElementById('audioEl');
 const playerBar = document.getElementById('playerBar');
 const playToggle = document.getElementById('playToggle');
@@ -651,12 +654,11 @@ const audioIconLayer = document.getElementById('audioIconLayer');
 let currentIndex = -1;      // pista de audio activa
 let currentVideoIndex = -1; // video activo
 let engine = null;          // 'audio' | 'youtube'
-let VIDEOS = [];
 
-/* ---------- YouTube IFrame API ---------- */
 let ytPlayer = null;
 let ytReady = false;
 let progressTimer = null;
+let pendingUnmute = false;
 window.onYouTubeIframeAPIReady = function(){ ytReady = true; };
 
 function ensureYtPlayer(cb){
@@ -704,14 +706,12 @@ function setPlayIcon(isPlaying){
 function setNowPlayingTitle(text, href){
   pTitle.innerHTML = href ? `<a href="${href}" target="_blank" rel="noopener">${text} ↗</a>` : text;
 }
-
 function fmt(t){
   if(!isFinite(t)) return '0:00';
   const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0');
   return `${m}:${s}`;
 }
 
-/* ---------- pistas de audio (Mixes) ---------- */
 function renderTrackList(){
   const list = document.getElementById('trackList');
   list.innerHTML = TRACKS.map((t,i) => `
@@ -748,8 +748,23 @@ function loadTrack(i){
   audio.play();
 }
 
-/* ---------- videos de YouTube ---------- */
-let pendingUnmute = false;
+function loadVideoTrack(i){
+  if(!VIDEOS.length) return;
+  currentVideoIndex = (i + VIDEOS.length) % VIDEOS.length;
+  const v = VIDEOS[currentVideoIndex];
+  const ytId = extractYouTubeId(v.url);
+  if(!ytId) return; // el reproductor inline solo soporta YouTube por ahora
+  engine = 'youtube';
+  audio.pause();
+  audioIconLayer.style.display = 'none';
+  playerBar.classList.add('active');
+  setNowPlayingTitle(v.title, v.url);
+  document.querySelectorAll('.track').forEach(r => r.classList.remove('playing'));
+  ensureYtPlayer(() => {
+    ytPlayer.loadVideoById(ytId);
+    ytPlayer.setVolume(Math.round(pVol.value * 100));
+  });
+}
 
 function autoplayFirstVideo(){
   if(!VIDEOS.length) return;
@@ -769,9 +784,8 @@ function autoplayFirstVideo(){
     pendingUnmute = true;
   });
 }
-// Si el navegador bloqueó el sonido, se activa con el primer clic/touch en la página
-document.addEventListener('click', tryUnmuteOnce, { once:false });
-document.addEventListener('touchstart', tryUnmuteOnce, { once:false });
+document.addEventListener('click', tryUnmuteOnce);
+document.addEventListener('touchstart', tryUnmuteOnce);
 function tryUnmuteOnce(){
   if(pendingUnmute && ytPlayer && ytPlayer.unMute){
     ytPlayer.unMute();
@@ -781,25 +795,6 @@ function tryUnmuteOnce(){
   }
 }
 
-function loadVideoTrack(i){
-  if(!VIDEOS.length) return;
-  currentVideoIndex = (i + VIDEOS.length) % VIDEOS.length;
-  const v = VIDEOS[currentVideoIndex];
-  const ytId = extractYouTubeId(v.url);
-  if(!ytId) return; // el reproductor inline solo soporta YouTube por ahora
-  engine = 'youtube';
-  audio.pause();
-  audioIconLayer.style.display = 'none';
-  playerBar.classList.add('active');
-  setNowPlayingTitle(v.title, v.url);
-  document.querySelectorAll('.track').forEach(r => r.classList.remove('playing'));
-  ensureYtPlayer(() => {
-    ytPlayer.loadVideoById(ytId);
-    ytPlayer.setVolume(Math.round(pVol.value * 100));
-  });
-}
-
-/* ---------- controles compartidos ---------- */
 playToggle.addEventListener('click', () => {
   if(engine === 'youtube'){
     if(!ytPlayer) return;
