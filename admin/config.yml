@@ -93,7 +93,7 @@ collections:
               - { label: "Título", name: "title", widget: "string" }
               - { label: "Etiqueta (ej. Original Mix)", name: "tag", widget: "string" }
               - { label: "Duración (ej. 6:32)", name: "dur", widget: "string" }
-              - { label: "Archivo de audio", name: "src", widget: "file", required: false, hint: "Sube un mp3 o pega una URL externa" }
+              - { label: "Link del mix", name: "url", widget: "string", required: false, hint: "Pega el link de SoundCloud, YouTube, o la URL directa de un mp3" }
 
           - label: "Discografía"
             name: "releases"
