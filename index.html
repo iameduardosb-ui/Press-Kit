@@ -136,8 +136,9 @@
   }
   @media(max-width:520px){ .vinyl-nav{ width:32px; height:32px; font-size:15px; } }
   .vinyl.spinning{ animation-play-state:running; }
-  .vinyl::before{ content:''; position:absolute; inset:40%; border-radius:50%; background:var(--accent); }
-  .vinyl::after{ content:''; position:absolute; inset:47%; border-radius:50%; background:#0a0a0b; }
+  .vinyl-label{ position:absolute; inset:32%; border-radius:50%; overflow:hidden; background:var(--accent); z-index:1; }
+  .vinyl-label img{ width:100%; height:100%; object-fit:cover; }
+  .vinyl::after{ content:''; position:absolute; inset:47%; border-radius:50%; background:#0a0a0b; z-index:2; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
 
   .hero-meta{ display:flex; gap:32px; margin-top:56px; font-family:var(--mono); font-size:12px; color:var(--muted); flex-wrap:wrap; }
@@ -212,10 +213,9 @@
   .player-bar.active{ transform:translateY(0); }
   .p-transport{ display:flex; align-items:center; gap:14px; }
   .p-cover{ position:relative; width:48px; height:48px; flex-shrink:0; border:1px solid var(--line-strong); background:var(--bg-alt); overflow:hidden; }
-  .p-cover #ytMount{ position:absolute; inset:0; width:100%; height:100%; }
-  .p-cover #ytMount iframe{ width:100%; height:100%; }
+  .p-cover #ytMount, #scMountWrap{ position:absolute; inset:0; width:100%; height:100%; display:none; }
+  .p-cover #ytMount iframe, #scMountWrap iframe{ width:100%; height:100%; border:0; }
   #audioIconLayer{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:var(--bg-alt); color:var(--accent); font-size:18px; z-index:2; }
-  #scCoverImg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
   .p-btn{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
   .p-btn:hover{ border-color:var(--accent); color:var(--accent); }
   .p-btn.play-toggle{ width:44px; height:44px; background:var(--accent); color:#0a0a0b; border-color:var(--accent); }
@@ -308,7 +308,9 @@
     </div>
     <div class="vinyl-wrap">
       <button class="vinyl-nav" id="vinylPrev" aria-label="Mix anterior">‹</button>
-      <div class="vinyl" id="heroVinyl" title="Reproducir / pausar"></div>
+      <div class="vinyl" id="heroVinyl" title="Reproducir / pausar">
+        <div class="vinyl-label" id="vinylLabel"></div>
+      </div>
       <button class="vinyl-nav" id="vinylNext" aria-label="Siguiente mix">›</button>
     </div>
   </div>
@@ -402,7 +404,7 @@
 <div class="player-bar" id="playerBar">
   <div class="p-cover" id="pCover">
     <div id="ytMount"></div>
-    <img id="scCoverImg" alt="">
+    <div id="scMountWrap"><iframe id="scMount" allow="autoplay"></iframe></div>
     <div id="audioIconLayer">♪</div>
   </div>
   <div class="p-transport">
@@ -424,7 +426,6 @@
   </div>
 </div>
 <audio id="audioEl"></audio>
-<iframe id="scMount" style="position:fixed; left:-9999px; top:-9999px; width:300px; height:166px; border:0;" allow="autoplay"></iframe>
 <script src="https://w.soundcloud.com/player/api.js"></script>
 
 <script>
@@ -782,12 +783,13 @@ function stopAudioEngine(){ audio.pause(); }
 function stopYoutubeEngine(){ if(ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); }
 function stopSoundCloudEngine(){ if(scWidget && scWidget.pause) scWidget.pause(); }
 function stopAllEngines(){ stopAudioEngine(); stopYoutubeEngine(); stopSoundCloudEngine(); }
-function setCoverMode(mode, imgUrl){
+function setCoverMode(mode){
   document.getElementById('ytMount').style.display = mode === 'youtube' ? 'block' : 'none';
-  const scImg = document.getElementById('scCoverImg');
-  if(mode === 'soundcloud' && imgUrl){ scImg.src = imgUrl; scImg.style.display = 'block'; }
-  else { scImg.style.display = 'none'; }
-  audioIconLayer.style.display = (mode === 'audio' || (mode === 'soundcloud' && !imgUrl)) ? 'flex' : 'none';
+  document.getElementById('scMountWrap').style.display = mode === 'soundcloud' ? 'block' : 'none';
+  audioIconLayer.style.display = mode === 'audio' ? 'flex' : 'none';
+}
+function setVinylLabel(url){
+  document.getElementById('vinylLabel').innerHTML = url ? `<img src="${url}" alt="">` : '';
 }
 
 function renderTrackList(){
@@ -843,6 +845,7 @@ function loadTrack(i){
   if(!url){
     engine = null;
     setCoverMode('audio');
+    setVinylLabel(null);
     setNowPlayingTitle(`${t.title} — agrega el link en /admin`, null);
     setPlayIcon(false);
     return;
@@ -853,12 +856,14 @@ function loadTrack(i){
     engine = 'soundcloud';
     setNowPlayingTitle(`${t.title} — ${t.tag}`, url);
     setCoverMode('soundcloud');
-    fetchScArtwork(url, art => setCoverMode('soundcloud', art));
+    setVinylLabel(null);
+    fetchScArtwork(url, art => setVinylLabel(art));
     loadSoundCloudTrack(url);
   } else if(ytId){
     engine = 'youtube';
     setNowPlayingTitle(`${t.title} — ${t.tag}`, url);
     setCoverMode('youtube');
+    setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
     ensureYtPlayer(() => {
       ytPlayer.loadVideoById(ytId);
       ytPlayer.setVolume(Math.round(pVol.value * 100));
@@ -867,6 +872,7 @@ function loadTrack(i){
     engine = 'audio';
     setNowPlayingTitle(`${t.title} — ${t.tag}`, null);
     setCoverMode('audio');
+    setVinylLabel(null);
     audio.src = url;
     audio.play();
   }
@@ -882,6 +888,7 @@ function loadVideoTrack(i){
   engine = 'youtube';
   stopAllEngines();
   setCoverMode('youtube');
+  setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
   playerBar.classList.add('active');
   setNowPlayingTitle(v.title, v.url);
   document.querySelectorAll('.track').forEach(r => r.classList.remove('playing'));
@@ -901,6 +908,7 @@ function autoplayFirstVideo(){
   const ytId = extractYouTubeId(v.url);
   engine = 'youtube';
   setCoverMode('youtube');
+  setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
   playerBar.classList.add('active');
   setNowPlayingTitle(v.title, v.url);
   ensureYtPlayer(() => {
