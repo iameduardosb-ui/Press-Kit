@@ -34,13 +34,6 @@
   },
   "tracks": [
     {
-      "title": "Baretechno",
-      "tag": "Techno",
-      "dur": "34:39",
-      "src": "https://on.soundcloud.com/v5oFD2NvV8eaMpY55R",
-      "url": "https://soundcloud.com/lileduar/baretechno"
-    },
-    {
       "title": "Potaje Carcelario",
       "tag": "Techno House",
       "dur": "34:11",
@@ -91,6 +84,11 @@
   ],
   "videos": [
     {
+      "title": "Baretechno",
+      "year": "2026",
+      "url": "https://youtu.be/F4xjXWB9Fqs"
+    },
+    {
       "title": "Live Set Especial 20 Sub, Pereira",
       "year": "2026",
       "youtube_id": "dQw4w9WgXcQ",
@@ -101,12 +99,6 @@
       "year": "2026",
       "youtube_id": "dQw4w9WgXcQ",
       "url": "https://youtu.be/Ak9tzxvbzPA"
-    },
-    {
-      "title": "Afable",
-      "year": "2026",
-      "youtube_id": "dQw4w9WgXcQ",
-      "url": "https://youtu.be/46axZxIap2Q"
     }
   ],
   "booking": {
