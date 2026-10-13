@@ -29,6 +29,7 @@ collections:
                   - { label: "Fotos", name: "fotos", widget: "boolean", default: true, required: false }
                   - { label: "Videos", name: "videos", widget: "boolean", default: true, required: false }
                   - { label: "Mixes", name: "mixes", widget: "boolean", default: true, required: false }
+                  - { label: "Eventos", name: "eventos", widget: "boolean", default: true, required: false }
                   - { label: "Discografía", name: "discografia", widget: "boolean", default: true, required: false }
                   - { label: "Prensa", name: "prensa", widget: "boolean", default: true, required: false }
                   - { label: "Booking", name: "booking", widget: "boolean", default: true, required: false }
@@ -95,6 +96,18 @@ collections:
               - { label: "Duración (ej. 6:32)", name: "dur", widget: "string" }
               - { label: "Link del mix", name: "url", widget: "string", required: false, hint: "Pega el link de SoundCloud, YouTube, o la URL directa de un mp3" }
 
+          - label: "Eventos (próximos y pasados)"
+            name: "events"
+            widget: "list"
+            hint: "Agrega cada evento con su fecha. La página los separa sola en 'Próximos' y 'Pasados' según la fecha de hoy."
+            fields:
+              - { label: "Nombre del evento", name: "name", widget: "string" }
+              - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", picker_utc: false }
+              - { label: "Lugar / club", name: "venue", widget: "string", required: false }
+              - { label: "Ciudad", name: "city", widget: "string", required: false }
+              - { label: "Enlace (entradas o info)", name: "url", widget: "string", required: false, hint: "Opcional. Si lo dejas vacío, el evento se muestra sin botón." }
+              - { label: "Flyer / afiche", name: "flyer", widget: "image", required: false }
+
           - label: "Discografía"
             name: "releases"
             widget: "list"
@@ -134,8 +147,22 @@ collections:
               - { label: "Texto del rider técnico", name: "rider_text", widget: "text" }
               - { label: "PDF del rider", name: "rider_pdf", widget: "file", required: false }
 
+          - label: "Textos de la página (títulos e introducciones)"
+            name: "copy"
+            widget: "object"
+            hint: "Todos opcionales: si dejas uno vacío, la página usa el texto por defecto."
+            fields:
+              - { label: "Título de la biografía", name: "bio_heading", widget: "string", required: false }
+              - { label: "Introducción — Fotos", name: "gallery_intro", widget: "text", required: false }
+              - { label: "Introducción — Videos", name: "videos_intro", widget: "text", required: false }
+              - { label: "Introducción — Mixes", name: "mixes_intro", widget: "text", required: false }
+              - { label: "Introducción — Eventos", name: "events_intro", widget: "text", required: false }
+              - { label: "Introducción — Discografía", name: "discografia_intro", widget: "text", required: false }
+              - { label: "Introducción — Booking", name: "booking_intro", widget: "text", required: false }
+
           - label: "Pie de página"
             name: "footer"
             widget: "object"
             fields:
-              - { label: "Texto del footer", name: "text", widget: "string" }
+              - { label: "Texto principal (ej. © 2026 Tu Nombre...)", name: "text", widget: "string" }
+              - { label: "Nota a la derecha (ej. Press kit construido a mano...)", name: "note", widget: "string", required: false }
