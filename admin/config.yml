@@ -21,18 +21,19 @@ collections:
             fields:
               - { label: "Color de acento", name: "accent_color", widget: "color", hint: "El color de detalles, botones y títulos destacados" }
               - { label: "Color de fondo", name: "bg_color", widget: "color", hint: "Usa un tono oscuro para que el texto siga siendo legible" }
-              - label: "Mostrar / ocultar secciones"
-                name: "sections"
+              - label: "Ocultar secciones"
+                name: "hidden_sections"
                 widget: "object"
+                hint: "Activa el interruptor SOLO de las secciones que quieras ocultar. Lo que dejes apagado se muestra. Lo que ocultes no se borra."
                 fields:
-                  - { label: "Biografía", name: "bio", widget: "boolean", default: true, required: false }
-                  - { label: "Fotos", name: "fotos", widget: "boolean", default: true, required: false }
-                  - { label: "Videos", name: "videos", widget: "boolean", default: true, required: false }
-                  - { label: "Mixes", name: "mixes", widget: "boolean", default: true, required: false }
-                  - { label: "Eventos", name: "eventos", widget: "boolean", default: true, required: false }
-                  - { label: "Discografía", name: "discografia", widget: "boolean", default: true, required: false }
-                  - { label: "Prensa", name: "prensa", widget: "boolean", default: true, required: false }
-                  - { label: "Booking", name: "booking", widget: "boolean", default: true, required: false }
+                  - { label: "Ocultar Biografía", name: "bio", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Fotos", name: "fotos", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Videos", name: "videos", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Mixes", name: "mixes", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Eventos", name: "eventos", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Discografía", name: "discografia", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Prensa", name: "prensa", widget: "boolean", default: false, required: false }
+                  - { label: "Ocultar Booking", name: "booking", widget: "boolean", default: false, required: false }
 
           - label: "Hero (portada)"
             name: "hero"
