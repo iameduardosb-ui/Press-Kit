@@ -215,6 +215,7 @@
   .p-cover{ position:relative; width:48px; height:48px; flex-shrink:0; border:1px solid var(--line-strong); background:var(--bg-alt); overflow:hidden; }
   .p-cover #ytMount, #scMountWrap{ position:absolute; inset:0; width:100%; height:100%; display:none; }
   .p-cover #ytMount iframe, #scMountWrap iframe{ width:100%; height:100%; border:0; }
+  #scCoverImg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; z-index:3; }
   #audioIconLayer{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:var(--bg-alt); color:var(--accent); font-size:18px; z-index:2; }
   .p-btn{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; }
   .p-btn:hover{ border-color:var(--accent); color:var(--accent); }
@@ -231,6 +232,28 @@
   .p-vol{ display:flex; align-items:center; gap:10px; width:110px; }
   .p-vol input{ width:80px; }
   @media(max-width:700px){ .p-vol{ display:none; } .player-bar{ grid-template-columns:auto auto 1fr; padding:10px var(--pad); } }
+
+
+  .events-block{ margin-bottom:48px; }
+  .events-block:last-child{ margin-bottom:0; }
+  .events-title{ font-size:28px; margin-bottom:16px; color:var(--accent); }
+  .event-list{ border-top:1px solid var(--line); }
+  .event{ display:grid; grid-template-columns:96px 56px 1fr auto; gap:20px; align-items:center; padding:18px 4px; border-bottom:1px solid var(--line); color:inherit; transition:.15s; }
+  a.event:hover{ background:var(--bg-alt); }
+  .event-date{ font-family:var(--mono); font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  .event-date b{ display:block; font-family:var(--display); font-size:34px; color:var(--fg); line-height:1; letter-spacing:.02em; font-weight:400; }
+  .event-flyer{ width:56px; height:56px; overflow:hidden; }
+  .event-flyer img{ width:100%; height:100%; object-fit:cover; }
+  .event-info b{ display:block; font-weight:600; font-size:16px; }
+  .event-info span{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .event-cta{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line-strong); padding:6px 12px; white-space:nowrap; }
+  a.event:hover .event-cta{ border-color:var(--accent); color:var(--accent); }
+  .event.past{ opacity:.6; }
+  .events-empty{ padding:20px 4px; font-family:var(--mono); font-size:12px; color:var(--muted); text-transform:uppercase; }
+  @media(max-width:700px){
+    .event{ grid-template-columns:64px 1fr; }
+    .event-flyer, .event-cta{ display:none; }
+  }
 
   .release-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
   @media(max-width:800px){ .release-grid{ grid-template-columns:repeat(2,1fr); } }
@@ -288,6 +311,7 @@
     <a href="#fotos">Fotos</a>
     <a href="#videos">Videos</a>
     <a href="#mixes">Mixes</a>
+    <a href="#eventos">Eventos</a>
     <a href="#discografia">Discografía</a>
     <a href="#booking">Booking</a>
   </div>
@@ -322,7 +346,7 @@
     <div id="bioPhoto"></div>
     <div class="bio-text">
       <div class="eyebrow">Biografía</div>
-      <h2 style="font-size:clamp(30px,4vw,46px); margin-bottom:20px;">Quién está detrás<br>de los platos</h2>
+      <h2 id="bioHeading" style="font-size:clamp(30px,4vw,46px); margin-bottom:20px;">Quién está detrás de los platos</h2>
       <div id="bioParagraphs"></div>
       <div class="stat-row" id="bioStats"></div>
     </div>
@@ -333,7 +357,7 @@
   <div class="section-head">
     <div class="eyebrow">Prensa</div>
     <h2>Fotos</h2>
-    <p>Banco de imágenes en alta resolución para prensa, promotores y redes. Haz clic para ampliar.</p>
+    <p id="galleryIntro">Banco de imágenes en alta resolución para prensa, promotores y redes. Haz clic para ampliar.</p>
   </div>
   <div class="gallery" id="gallery"></div>
 </section>
@@ -342,7 +366,7 @@
   <div class="section-head">
     <div class="eyebrow">Sets en vivo</div>
     <h2>Videos</h2>
-    <p>Grabaciones de sets, aftermovies y clips de festivales. Los videos de YouTube se reproducen en la barra inferior.</p>
+    <p id="videosIntro">Grabaciones de sets, aftermovies y clips de festivales. Los videos de YouTube se reproducen en la barra inferior.</p>
   </div>
   <div class="video-grid" id="videoGrid"></div>
 </section>
@@ -351,16 +375,32 @@
   <div class="section-head">
     <div class="eyebrow">Escucha</div>
     <h2>Mixes</h2>
-    <p>Reproductor propio: haz clic en cualquier pista para cargarla en la barra inferior.</p>
+    <p id="mixesIntro">Reproductor propio: haz clic en cualquier pista para cargarla en la barra inferior.</p>
   </div>
   <div class="track-list" id="trackList"></div>
+</section>
+
+<section id="eventos">
+  <div class="section-head">
+    <div class="eyebrow">Agenda</div>
+    <h2>Eventos</h2>
+    <p id="eventsIntro">Próximas fechas y recorrido de presentaciones anteriores.</p>
+  </div>
+  <div class="events-block" id="eventsUpcomingBlock">
+    <h3 class="events-title">Próximos</h3>
+    <div class="event-list" id="eventsUpcoming"></div>
+  </div>
+  <div class="events-block" id="eventsPastBlock">
+    <h3 class="events-title">Pasados</h3>
+    <div class="event-list" id="eventsPast"></div>
+  </div>
 </section>
 
 <section id="discografia">
   <div class="section-head">
     <div class="eyebrow">Releases</div>
     <h2>Discografía</h2>
-    <p>Lanzamientos propios y remixes. Enlaza cada portada a Bandcamp, Beatport o Spotify.</p>
+    <p id="discoIntro">Lanzamientos propios y remixes. Enlaza cada portada a Bandcamp, Beatport o Spotify.</p>
   </div>
   <div class="release-grid" id="releaseGrid"></div>
 </section>
@@ -379,7 +419,7 @@
   <div class="section-head">
     <div class="eyebrow">Contacto</div>
     <h2>Booking</h2>
-    <p>Para fechas, rider técnico completo y consultas de prensa.</p>
+    <p id="bookingIntro">Para fechas, rider técnico completo y consultas de prensa.</p>
   </div>
   <div class="booking-grid">
     <div class="contact-list" id="bookingList"></div>
@@ -393,7 +433,7 @@
 
 <footer>
   <span id="footerText"></span>
-  <span>Press kit construido a mano — sin plantillas.</span>
+  <span id="footerNote">Press kit construido a mano — sin plantillas.</span>
 </footer>
 
 <div class="modal" id="modal">
@@ -405,6 +445,7 @@
   <div class="p-cover" id="pCover">
     <div id="ytMount"></div>
     <div id="scMountWrap"><iframe id="scMount" allow="autoplay"></iframe></div>
+    <img id="scCoverImg" alt="">
     <div id="audioIconLayer">♪</div>
   </div>
   <div class="p-transport">
@@ -483,7 +524,7 @@ function applyTheme(settings){
 }
 function applySectionVisibility(sections){
   if(!sections) return;
-  ['bio','fotos','videos','mixes','discografia','prensa','booking'].forEach(key => {
+  ['bio','fotos','videos','mixes','eventos','discografia','prensa','booking'].forEach(key => {
     const visible = !!sections[key];
     const el = document.getElementById(key);
     if(el) el.style.display = visible ? '' : 'none';
@@ -521,8 +562,10 @@ function fetchScArtwork(url, cb){
 
 fetch('content.json?_=' + Date.now())
   .then(r => r.json())
-  .then(data => { DATA = data; render(data); autoplayFirstVideo(); })
-  .catch(() => {
+  .then(data => { DATA = data; render(data); })
+  .then(() => { try { autoplayRandom(); } catch(err){ console.warn('Autoplay omitido:', err); } })
+  .catch((err) => {
+    console.error(err);
     document.body.innerHTML = '<p style="padding:40px;font-family:monospace;color:#ECEAE4;">No se pudo cargar content.json. Verifica que el archivo exista junto a index.html.</p>';
   });
 
@@ -605,8 +648,54 @@ function render(d){
 
   document.getElementById('footerText').textContent = d.footer.text;
 
+  // Textos editables desde el panel (con valores por defecto si aún no los llenas)
+  const c = d.copy || {};
+  const setText = (id, val) => { if(val) document.getElementById(id).textContent = val; };
+  setText('bioHeading', c.bio_heading);
+  setText('galleryIntro', c.gallery_intro);
+  setText('videosIntro', c.videos_intro);
+  setText('mixesIntro', c.mixes_intro);
+  setText('eventsIntro', c.events_intro);
+  setText('discoIntro', c.discografia_intro);
+  setText('bookingIntro', c.booking_intro);
+  setText('footerNote', d.footer && d.footer.note);
+
+  renderEvents(d.events || []);
+
   applySectionVisibility(d.settings && d.settings.sections);
   initInteractions();
+}
+
+/* ---------- eventos: próximos y pasados se separan solos según la fecha ---------- */
+function renderEvents(events){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const parse = e => new Date((e.date || '').slice(0,10) + 'T00:00:00');
+  const valid = events.filter(e => e.date && !isNaN(parse(e)));
+  const upcoming = valid.filter(e => parse(e) >= today).sort((a,b) => parse(a) - parse(b));
+  const past = valid.filter(e => parse(e) < today).sort((a,b) => parse(b) - parse(a));
+
+  const card = (e, isPast) => {
+    const dt = parse(e);
+    const month = dt.toLocaleDateString('es', { month:'short' }).replace('.','');
+    const meta = [e.venue, e.city].filter(Boolean).join(' — ');
+    const flyer = e.flyer ? `<div class="event-flyer"><img src="${e.flyer}" alt="${e.name || ''}"></div>` : '<div class="event-flyer ph"></div>';
+    const cta = e.url ? `<span class="event-cta">${isPast ? 'Ver' : 'Entradas'} ↗</span>` : '<span></span>';
+    const inner = `
+      <div class="event-date"><b>${String(dt.getDate()).padStart(2,'0')}</b>${month} ${dt.getFullYear()}</div>
+      ${flyer}
+      <div class="event-info"><b>${e.name || ''}</b><span>${meta}</span></div>
+      ${cta}`;
+    return e.url
+      ? `<a class="event${isPast ? ' past' : ''}" href="${e.url}" target="_blank" rel="noopener">${inner}</a>`
+      : `<div class="event${isPast ? ' past' : ''}">${inner}</div>`;
+  };
+
+  const emptyMsg = txt => `<div class="events-empty">${txt}</div>`;
+  document.getElementById('eventsUpcoming').innerHTML = upcoming.length
+    ? upcoming.map(e => card(e, false)).join('') : emptyMsg('Sin fechas anunciadas por ahora');
+  document.getElementById('eventsPast').innerHTML = past.length
+    ? past.map(e => card(e, true)).join('') : emptyMsg('Aún no hay eventos pasados');
+  document.getElementById('eventsPastBlock').style.display = past.length ? '' : 'none';
 }
 
 function initInteractions(){
@@ -715,32 +804,53 @@ function onYtStateChange(e){
     }
   }
   else if(e.data === YT.PlayerState.PAUSED){ setPlayIcon(false); stopProgressTimer(); }
-  else if(e.data === YT.PlayerState.ENDED){ loadVideoTrack(currentVideoIndex + 1); }
+  else if(e.data === YT.PlayerState.ENDED){ goNext(); }
 }
 
 /* ---------- SoundCloud Widget API ---------- */
 let scCurrentDuration = 0;
-function loadSoundCloudTrack(url){
+let scLoadingUrl = '';
+function applyScArtwork(art, url){
+  if(!art || engine !== 'soundcloud' || scLoadingUrl !== url) return;
+  setCoverMode('soundcloud', art);
+  setVinylLabel(art);
+}
+function whenScReady(cb, tries){
+  tries = tries || 0;
+  if(typeof SC !== 'undefined' && SC.Widget){ cb(); return; }
+  if(tries > 60) return; // ~12 s; si no carga (p. ej. bloqueado por el navegador) simplemente no suena
+  setTimeout(() => whenScReady(cb, tries + 1), 200);
+}
+function loadSoundCloudTrack(url, muted){
+  whenScReady(() => loadSoundCloudTrackNow(url, muted));
+}
+function loadSoundCloudTrackNow(url, muted){
   const iframe = document.getElementById('scMount');
+  scLoadingUrl = url;
+  const afterReady = () => {
+    scWidget.setVolume(muted ? 0 : Math.round(pVol.value * 100));
+    scWidget.getDuration(d => { scCurrentDuration = d; });
+    scWidget.play();
+    // la portada se pide directo al widget (más confiable que consultar a SoundCloud aparte)
+    scWidget.getCurrentSound(snd => {
+      if(snd && snd.artwork_url) applyScArtwork(snd.artwork_url.replace('-large','-t500x500'), url);
+    });
+  };
   if(!scWidget){
     iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}`;
     scWidget = SC.Widget(iframe);
     scWidget.bind(SC.Widget.Events.READY, () => {
-      scWidget.setVolume(Math.round(pVol.value * 100));
-      scWidget.getDuration(d => { scCurrentDuration = d; });
-      scWidget.play();
-      scWidget.bind(SC.Widget.Events.PLAY, () => { if(engine === 'soundcloud'){ setPlayIcon(true); startProgressTimerSC(); } });
+      scWidget.bind(SC.Widget.Events.PLAY, () => {
+        if(engine !== 'soundcloud') return;
+        setPlayIcon(true); startProgressTimerSC();
+        if(pendingUnmute){ scWidget.setVolume(50); pVol.value = 0.5; pendingUnmute = false; }
+      });
       scWidget.bind(SC.Widget.Events.PAUSE, () => { if(engine === 'soundcloud'){ setPlayIcon(false); stopProgressTimer(); } });
-      scWidget.bind(SC.Widget.Events.FINISH, () => { if(engine === 'soundcloud'){ loadTrack(currentIndex + 1); } });
+      scWidget.bind(SC.Widget.Events.FINISH, () => { if(engine === 'soundcloud') goNext(); });
+      afterReady();
     });
   } else {
-    scWidget.load(url, {
-      callback: () => {
-        scWidget.setVolume(Math.round(pVol.value * 100));
-        scWidget.getDuration(d => { scCurrentDuration = d; });
-        scWidget.play();
-      }
-    });
+    scWidget.load(url, { callback: afterReady });
   }
 }
 function startProgressTimerSC(){
@@ -783,10 +893,14 @@ function stopAudioEngine(){ audio.pause(); }
 function stopYoutubeEngine(){ if(ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); }
 function stopSoundCloudEngine(){ if(scWidget && scWidget.pause) scWidget.pause(); }
 function stopAllEngines(){ stopAudioEngine(); stopYoutubeEngine(); stopSoundCloudEngine(); }
-function setCoverMode(mode){
+function setCoverMode(mode, imgUrl){
   document.getElementById('ytMount').style.display = mode === 'youtube' ? 'block' : 'none';
   document.getElementById('scMountWrap').style.display = mode === 'soundcloud' ? 'block' : 'none';
-  audioIconLayer.style.display = mode === 'audio' ? 'flex' : 'none';
+  const scImg = document.getElementById('scCoverImg');
+  if(mode === 'soundcloud' && imgUrl){ scImg.src = imgUrl; scImg.style.display = 'block'; }
+  else { scImg.style.display = 'none'; }
+  // mientras llega la portada de SoundCloud se tapa el iframe con el ícono ♪ (el iframe sigue visible por debajo para que suene)
+  audioIconLayer.style.display = (mode === 'audio' || (mode === 'soundcloud' && !imgUrl)) ? 'flex' : 'none';
 }
 function setVinylLabel(url){
   document.getElementById('vinylLabel').innerHTML = url ? `<img src="${url}" alt="">` : '';
@@ -831,11 +945,12 @@ function loadTrackCoverThumb(i, url){
   }
 }
 
-function loadTrack(i){
+function loadTrack(i, muted){
   if(!TRACKS.length) return;
   currentIndex = (i + TRACKS.length) % TRACKS.length;
   const t = TRACKS[currentIndex];
   activeSource = 'tracks';
+  pendingUnmute = !!muted;
   document.querySelectorAll('.track').forEach(r => r.classList.toggle('playing', parseInt(r.dataset.index) === currentIndex));
   playerBar.classList.add('active');
 
@@ -857,28 +972,29 @@ function loadTrack(i){
     setNowPlayingTitle(`${t.title} — ${t.tag}`, url);
     setCoverMode('soundcloud');
     setVinylLabel(null);
-    fetchScArtwork(url, art => setVinylLabel(art));
-    loadSoundCloudTrack(url);
+    fetchScArtwork(url, art => applyScArtwork(art, url));
+    loadSoundCloudTrack(url, muted);
   } else if(ytId){
     engine = 'youtube';
     setNowPlayingTitle(`${t.title} — ${t.tag}`, url);
     setCoverMode('youtube');
     setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
     ensureYtPlayer(() => {
+      if(muted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(Math.round(pVol.value * 100)); }
       ytPlayer.loadVideoById(ytId);
-      ytPlayer.setVolume(Math.round(pVol.value * 100));
     });
   } else {
     engine = 'audio';
     setNowPlayingTitle(`${t.title} — ${t.tag}`, null);
     setCoverMode('audio');
     setVinylLabel(null);
+    audio.muted = !!muted;
     audio.src = url;
-    audio.play();
+    audio.play().catch(() => {});
   }
 }
 
-function loadVideoTrack(i){
+function loadVideoTrack(i, muted){
   if(!VIDEOS.length) return;
   currentVideoIndex = (i + VIDEOS.length) % VIDEOS.length;
   const v = VIDEOS[currentVideoIndex];
@@ -886,6 +1002,7 @@ function loadVideoTrack(i){
   if(!ytId) return; // el reproductor inline solo soporta YouTube por ahora
   activeSource = 'videos';
   engine = 'youtube';
+  pendingUnmute = !!muted;
   stopAllEngines();
   setCoverMode('youtube');
   setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
@@ -893,40 +1010,31 @@ function loadVideoTrack(i){
   setNowPlayingTitle(v.title, v.url);
   document.querySelectorAll('.track').forEach(r => r.classList.remove('playing'));
   ensureYtPlayer(() => {
+    if(muted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(Math.round(pVol.value * 100)); }
     ytPlayer.loadVideoById(ytId);
-    ytPlayer.setVolume(Math.round(pVol.value * 100));
   });
 }
 
-function autoplayFirstVideo(){
-  if(!VIDEOS.length) return;
-  const idx = VIDEOS.findIndex(v => extractYouTubeId(v.url));
-  if(idx === -1) return;
-  currentVideoIndex = idx;
-  activeSource = 'videos';
-  const v = VIDEOS[idx];
-  const ytId = extractYouTubeId(v.url);
-  engine = 'youtube';
-  setCoverMode('youtube');
-  setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
-  playerBar.classList.add('active');
-  setNowPlayingTitle(v.title, v.url);
-  ensureYtPlayer(() => {
-    ytPlayer.mute();
-    ytPlayer.loadVideoById(ytId);
-    ytPlayer.playVideo();
-    pendingUnmute = true;
-  });
+/* Al abrir la página suena algo al azar entre TODOS tus videos y mixes.
+   Empieza en silencio (los navegadores lo exigen) y sube a 50% apenas se puede. */
+function autoplayRandom(){
+  const pool = [];
+  VIDEOS.forEach((v,i) => { if(extractYouTubeId(v.url)) pool.push({ type:'video', index:i }); });
+  TRACKS.forEach((t,i) => { if(t.url || t.src) pool.push({ type:'track', index:i }); });
+  if(!pool.length) return;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  if(pick.type === 'video') loadVideoTrack(pick.index, true);
+  else loadTrack(pick.index, true);
 }
 document.addEventListener('click', tryUnmuteOnce);
 document.addEventListener('touchstart', tryUnmuteOnce);
 function tryUnmuteOnce(){
-  if(pendingUnmute && ytPlayer && ytPlayer.unMute){
-    ytPlayer.unMute();
-    ytPlayer.setVolume(50);
-    pVol.value = 0.5;
-    pendingUnmute = false;
-  }
+  if(!pendingUnmute) return;
+  pendingUnmute = false;
+  pVol.value = 0.5;
+  if(engine === 'youtube' && ytPlayer && ytPlayer.unMute){ ytPlayer.unMute(); ytPlayer.setVolume(50); ytPlayer.playVideo(); }
+  else if(engine === 'soundcloud' && scWidget){ scWidget.setVolume(50); scWidget.play(); }
+  else if(engine === 'audio'){ audio.muted = false; audio.volume = 0.5; audio.play().catch(() => {}); }
 }
 
 playToggle.addEventListener('click', () => {
@@ -964,7 +1072,11 @@ document.getElementById('heroPlay').addEventListener('click', () => {
   if(engine === null) loadTrack(0);
 });
 
-audio.addEventListener('play', () => { if(engine === 'audio') setPlayIcon(true); });
+audio.addEventListener('play', () => {
+  if(engine !== 'audio') return;
+  setPlayIcon(true);
+  if(pendingUnmute){ audio.muted = false; audio.volume = 0.5; pVol.value = 0.5; pendingUnmute = false; }
+});
 audio.addEventListener('pause', () => { if(engine === 'audio') setPlayIcon(false); });
 audio.addEventListener('ended', () => { if(engine === 'audio') loadTrack(currentIndex + 1); });
 audio.addEventListener('timeupdate', () => {
