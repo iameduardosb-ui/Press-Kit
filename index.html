@@ -522,10 +522,11 @@ function applyTheme(settings){
     root.setProperty('--bg-raise', lighten(settings.bg_color, 18));
   }
 }
-function applySectionVisibility(sections){
-  if(!sections) return;
+function applySectionVisibility(hidden){
+  // Solo se oculta lo que esté marcado como "ocultar" en el panel; todo lo demás se muestra.
+  hidden = hidden || {};
   ['bio','fotos','videos','mixes','eventos','discografia','prensa','booking'].forEach(key => {
-    const visible = !!sections[key];
+    const visible = !hidden[key];
     const el = document.getElementById(key);
     if(el) el.style.display = visible ? '' : 'none';
     document.querySelectorAll(`.nav-links a[href="#${key}"]`).forEach(a => {
@@ -662,7 +663,7 @@ function render(d){
 
   renderEvents(d.events || []);
 
-  applySectionVisibility(d.settings && d.settings.sections);
+  applySectionVisibility(d.settings && d.settings.hidden_sections);
   initInteractions();
 }
 
