@@ -126,6 +126,16 @@
       }
     ]
   },
+  "events": [
+    {
+      "flyer": "images/whatsapp-image-2026-10-10-at-16.25.54.jpeg",
+      "venue": "BINARIUM",
+      "city": "Pereira",
+      "name": "WITCHING HOUR",
+      "date": "2026-10-30",
+      "url": "https://www.instagram.com/lileduaar/"
+    }
+  ],
   "hero": {
     "kicker": "Press Kit — Techno / Groove / Melodic",
     "title_line1": "DJ",
@@ -143,12 +153,12 @@
     ],
     "genres": [
       {
-        "name": "House",
-        "bpm": "126 - 128 BPM"
-      },
-      {
         "name": "Groove",
         "bpm": "137 - 142 BM"
+      },
+      {
+        "name": "House",
+        "bpm": "126 - 128 BPM"
       }
     ],
     "kicker_prefix": "Press-Kit"
