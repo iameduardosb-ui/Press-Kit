@@ -234,26 +234,29 @@
   @media(max-width:700px){ .p-vol{ display:none; } .player-bar{ grid-template-columns:auto auto 1fr; padding:10px var(--pad); } }
 
 
-  .events-block{ margin-bottom:48px; }
+  .events-block{ margin-bottom:56px; }
   .events-block:last-child{ margin-bottom:0; }
-  .events-title{ font-size:28px; margin-bottom:16px; color:var(--accent); }
-  .event-list{ border-top:1px solid var(--line); }
-  .event{ display:grid; grid-template-columns:96px 56px 1fr auto; gap:20px; align-items:center; padding:18px 4px; border-bottom:1px solid var(--line); color:inherit; transition:.15s; }
-  a.event:hover{ background:var(--bg-alt); }
-  .event-date{ font-family:var(--mono); font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
-  .event-date b{ display:block; font-family:var(--display); font-size:34px; color:var(--fg); line-height:1; letter-spacing:.02em; font-weight:400; }
-  .event-flyer{ width:56px; height:56px; overflow:hidden; }
-  .event-flyer img{ width:100%; height:100%; object-fit:cover; }
-  .event-info b{ display:block; font-weight:600; font-size:16px; }
-  .event-info span{ font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; }
-  .event-cta{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line-strong); padding:6px 12px; white-space:nowrap; }
-  a.event:hover .event-cta{ border-color:var(--accent); color:var(--accent); }
-  .event.past{ opacity:.6; }
-  .events-empty{ padding:20px 4px; font-family:var(--mono); font-size:12px; color:var(--muted); text-transform:uppercase; }
-  @media(max-width:700px){
-    .event{ grid-template-columns:64px 1fr; }
-    .event-flyer, .event-cta{ display:none; }
-  }
+  .events-title{ font-size:28px; margin-bottom:20px; color:var(--accent); }
+  .event-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  @media(max-width:800px){ .event-grid{ grid-template-columns:repeat(2,1fr); gap:16px; } }
+  @media(max-width:480px){ .event-grid{ grid-template-columns:1fr; } }
+  .event-card{ display:flex; flex-direction:column; }
+  .event-flyer{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--bg-alt); }
+  .event-flyer[data-eid]{ cursor:pointer; }
+  .event-flyer img{ width:100%; height:100%; object-fit:cover; transition:transform .35s, filter .35s, opacity .35s; }
+  .event-flyer[data-eid]:hover img{ transform:scale(1.04); }
+  .event-flyer.ph{ border:1px dashed var(--line-strong); }
+  .event-badge{ position:absolute; top:12px; left:12px; z-index:2; background:var(--bg); border:1px solid var(--line-strong); padding:8px 12px; text-align:center; line-height:1; pointer-events:none; }
+  .event-badge b{ display:block; font-family:var(--display); font-size:30px; font-weight:400; color:var(--fg); letter-spacing:.02em; }
+  .event-badge span{ display:block; margin-top:4px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .event-body{ padding-top:14px; }
+  .event-body b{ display:block; font-weight:600; font-size:17px; line-height:1.25; }
+  .event-body .event-meta{ display:block; margin-top:4px; font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .event-cta{ display:inline-block; margin-top:14px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line-strong); padding:9px 16px; transition:.2s; }
+  .event-cta:hover{ border-color:var(--accent); color:var(--accent); }
+  .event-card.past .event-flyer img{ filter:grayscale(.85); opacity:.7; }
+  .event-card.past .event-body{ opacity:.7; }
+  .events-empty{ grid-column:1 / -1; padding:20px 0; font-family:var(--mono); font-size:12px; color:var(--muted); text-transform:uppercase; border-top:1px solid var(--line); }
 
   .release-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
   @media(max-width:800px){ .release-grid{ grid-template-columns:repeat(2,1fr); } }
@@ -388,11 +391,11 @@
   </div>
   <div class="events-block" id="eventsUpcomingBlock">
     <h3 class="events-title">Próximos</h3>
-    <div class="event-list" id="eventsUpcoming"></div>
+    <div class="event-grid" id="eventsUpcoming"></div>
   </div>
   <div class="events-block" id="eventsPastBlock">
     <h3 class="events-title">Pasados</h3>
-    <div class="event-list" id="eventsPast"></div>
+    <div class="event-grid" id="eventsPast"></div>
   </div>
 </section>
 
@@ -668,27 +671,32 @@ function render(d){
 }
 
 /* ---------- eventos: próximos y pasados se separan solos según la fecha ---------- */
+let EVENTS_RENDERED = [];
 function renderEvents(events){
   const today = new Date(); today.setHours(0,0,0,0);
   const parse = e => new Date((e.date || '').slice(0,10) + 'T00:00:00');
   const valid = events.filter(e => e.date && !isNaN(parse(e)));
   const upcoming = valid.filter(e => parse(e) >= today).sort((a,b) => parse(a) - parse(b));
   const past = valid.filter(e => parse(e) < today).sort((a,b) => parse(b) - parse(a));
+  EVENTS_RENDERED = [];
 
   const card = (e, isPast) => {
     const dt = parse(e);
     const month = dt.toLocaleDateString('es', { month:'short' }).replace('.','');
+    const badge = `<div class="event-badge"><b>${String(dt.getDate()).padStart(2,'0')}</b><span>${month} ${dt.getFullYear()}</span></div>`;
     const meta = [e.venue, e.city].filter(Boolean).join(' — ');
-    const flyer = e.flyer ? `<div class="event-flyer"><img src="${e.flyer}" alt="${e.name || ''}"></div>` : '<div class="event-flyer ph"></div>';
-    const cta = e.url ? `<span class="event-cta">${isPast ? 'Ver' : 'Entradas'} ↗</span>` : '<span></span>';
-    const inner = `
-      <div class="event-date"><b>${String(dt.getDate()).padStart(2,'0')}</b>${month} ${dt.getFullYear()}</div>
+    let flyer;
+    if(e.flyer){
+      EVENTS_RENDERED.push(e);
+      flyer = `<div class="event-flyer" data-eid="${EVENTS_RENDERED.length - 1}"><img src="${e.flyer}" alt="${(e.name || '').replace(/"/g,'&quot;')}">${badge}</div>`;
+    } else {
+      flyer = `<div class="event-flyer ph">Flyer pendiente${badge}</div>`;
+    }
+    const cta = e.url ? `<a class="event-cta" href="${e.url}" target="_blank" rel="noopener">${isPast ? 'Ver' : 'Entradas'} ↗</a>` : '';
+    return `<div class="event-card${isPast ? ' past' : ''}">
       ${flyer}
-      <div class="event-info"><b>${e.name || ''}</b><span>${meta}</span></div>
-      ${cta}`;
-    return e.url
-      ? `<a class="event${isPast ? ' past' : ''}" href="${e.url}" target="_blank" rel="noopener">${inner}</a>`
-      : `<div class="event${isPast ? ' past' : ''}">${inner}</div>`;
+      <div class="event-body"><b>${e.name || ''}</b>${meta ? `<span class="event-meta">${meta}</span>` : ''}${cta}</div>
+    </div>`;
   };
 
   const emptyMsg = txt => `<div class="events-empty">${txt}</div>`;
@@ -705,6 +713,15 @@ function initInteractions(){
     if(!item) return;
     const g = DATA.gallery[item.dataset.idx];
     openImageModal(g.image, g.alt);
+  });
+
+  ['eventsUpcoming','eventsPast'].forEach(id => {
+    document.getElementById(id).addEventListener('click', (e) => {
+      const fl = e.target.closest('.event-flyer[data-eid]');
+      if(!fl) return;
+      const ev = EVENTS_RENDERED[parseInt(fl.dataset.eid)];
+      if(ev) openImageModal(ev.flyer, ev.name || 'Flyer');
+    });
   });
 
   document.getElementById('videoGrid').addEventListener('click', (e) => {
@@ -749,7 +766,8 @@ document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(
 
 function closeModal(){ modal.classList.remove('open'); modalBody.innerHTML = ''; }
 function openImageModal(url, label){
-  modalBody.innerHTML = url ? `<img src="${url}" alt="${label}">` : `<div class="ph" style="aspect-ratio:4/3;">${label} — sube esta imagen en /admin</div>`;
+  const safe = String(label || '').replace(/"/g, '&quot;');
+  modalBody.innerHTML = url ? `<img src="${url}" alt="${safe}">` : `<div class="ph" style="aspect-ratio:4/3;">${label} — sube esta imagen en /admin</div>`;
   modal.classList.add('open');
 }
 function openVideoModal(url){
