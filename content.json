@@ -12,7 +12,7 @@
     "bg_color": "#0a0a0b",
     "hidden_sections": {
       "prensa": true,
-      "booking": true,
+      "booking": false,
       "discografia": true
     }
   },
