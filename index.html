@@ -181,6 +181,14 @@
   .video-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .video-thumb::after{ content:''; position:absolute; inset:0; background:rgba(0,0,0,.3); opacity:0; transition:.2s; }
   .video-card:hover .video-thumb::after{ opacity:1; }
+  .video-thumb{ cursor:pointer; }
+  .video-thumb.playing{ cursor:default; border-color:transparent; padding:0; background:#000; }
+  .video-thumb.playing img, .video-thumb.playing .play-ring{ display:none; }
+  .video-thumb.playing::after{ display:none; }
+  .yt-inline{ position:absolute; inset:0; width:100%; height:100%; z-index:3; }
+  .yt-inline iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .video-meta a{ color:inherit; }
+  .video-meta a:hover{ color:var(--accent); text-decoration:underline; }
   .play-ring{ position:relative; z-index:2; width:56px; height:56px; border:1px solid var(--fg); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:.2s; }
   .video-card:hover .play-ring{ background:var(--accent); border-color:var(--accent); }
   .play-ring::after{ content:''; width:0; height:0; border-left:12px solid currentColor; border-top:7px solid transparent; border-bottom:7px solid transparent; margin-left:3px; }
@@ -369,7 +377,7 @@
   <div class="section-head">
     <div class="eyebrow">Sets en vivo</div>
     <h2>Videos</h2>
-    <p id="videosIntro">Grabaciones de sets, aftermovies y clips de festivales. Los videos de YouTube se reproducen en la barra inferior.</p>
+    <p id="videosIntro">Grabaciones de sets, aftermovies y clips de festivales. Dale play para verlos aquí mismo; el título o un doble clic te llevan a YouTube.</p>
   </div>
   <div class="video-grid" id="videoGrid"></div>
 </section>
@@ -623,7 +631,7 @@ function render(d){
     return `
     <div class="video-card" data-idx="${i}" data-url="${v.url || ''}" data-yt="${ytId || ''}">
       <div class="ph video-thumb">${inner}</div>
-      <div class="video-meta"><span>${v.title}</span><span>${v.year}</span></div>
+      <div class="video-meta"><span>${v.url ? `<a href="${v.url}" target="_blank" rel="noopener" title="Abrir en YouTube">${v.title}</a>` : v.title}</span><span>${v.year}</span></div>
     </div>`;
   }).join('');
 
@@ -724,14 +732,25 @@ function initInteractions(){
     });
   });
 
-  document.getElementById('videoGrid').addEventListener('click', (e) => {
+  // Clic en el video = reproducir aquí mismo. Doble clic = abrir en YouTube.
+  // Clic en el título = abrir en YouTube (es un enlace normal).
+  let videoClickTimer = null;
+  const videoGrid = document.getElementById('videoGrid');
+  videoGrid.addEventListener('click', (e) => {
+    if(e.target.closest('a')) return;
+    const thumb = e.target.closest('.video-thumb');
     const card = e.target.closest('.video-card');
-    if(!card || !card.dataset.url) return;
-    if(card.dataset.yt){
-      loadVideoTrack(parseInt(card.dataset.idx));
-    } else {
-      openVideoModal(card.dataset.url);
-    }
+    if(!thumb || !card || !card.dataset.url || thumb.classList.contains('playing')) return;
+    if(!card.dataset.yt){ openVideoModal(card.dataset.url); return; }
+    clearTimeout(videoClickTimer);
+    videoClickTimer = setTimeout(() => loadVideoTrack(parseInt(card.dataset.idx)), 230);
+  });
+  videoGrid.addEventListener('dblclick', (e) => {
+    const thumb = e.target.closest('.video-thumb');
+    const card = e.target.closest('.video-card');
+    if(!thumb || !card || !card.dataset.url) return;
+    clearTimeout(videoClickTimer);
+    window.open(card.dataset.url, '_blank', 'noopener');
   });
 
   document.querySelectorAll('section, .release, .video-card').forEach(el => el.classList.add('reveal'));
@@ -800,17 +819,50 @@ let progressTimer = null;
 let pendingUnmute = false;
 window.onYouTubeIframeAPIReady = function(){ ytReady = true; };
 
-function ensureYtPlayer(cb){
-  if(ytPlayer){ cb(); return; }
-  const init = () => {
-    ytPlayer = new YT.Player('ytMount', {
+let ytKey = null;         // 'bar' o 'v<índice>' (en qué lugar está el reproductor ahora)
+let inlineThumb = null;   // tarjeta de video que tiene el reproductor en vivo
+let ytToken = 0;
+function resetInlineVideo(){
+  if(inlineThumb){
+    inlineThumb.classList.remove('playing');
+    const m = inlineThumb.querySelector('.yt-inline');
+    if(m) m.remove();
+    inlineThumb = null;
+  }
+}
+function destroyYt(){
+  stopProgressTimer();
+  if(ytPlayer){ try{ ytPlayer.destroy(); }catch(err){} }
+  ytPlayer = null; ytKey = null;
+  resetInlineVideo();
+  const bar = document.getElementById('ytMount');
+  if(bar) bar.innerHTML = '';
+}
+function ensureYtPlayer(container, key, showControls, cb){
+  if(ytPlayer && ytKey === key){ cb(); return; }
+  const myToken = ++ytToken;
+  const build = () => {
+    if(myToken !== ytToken) return; // llegó una petición más nueva
+    destroyYt();
+    // YouTube reemplaza el elemento que le damos por su iframe; por eso va dentro de un contenedor propio
+    const wrap = document.createElement('div');
+    wrap.className = 'yt-inline';
+    const mount = document.createElement('div');
+    wrap.appendChild(mount);
+    container.appendChild(wrap);
+    if(key !== 'bar'){ container.classList.add('playing'); inlineThumb = container; }
+    ytKey = key;
+    ytPlayer = new YT.Player(mount, {
       height:'100%', width:'100%',
-      playerVars:{ controls:0, disablekb:1, modestbranding:1, rel:0, playsinline:1 },
-      events:{ onReady: cb, onStateChange: onYtStateChange }
+      playerVars:{ controls: showControls ? 1 : 0, disablekb: showControls ? 0 : 1, modestbranding:1, rel:0, playsinline:1 },
+      events:{
+        onReady: (e) => { if(e.target === ytPlayer) cb(); },
+        onStateChange: (e) => { if(e.target === ytPlayer) onYtStateChange(e); }
+      }
     });
   };
-  if(ytReady) init();
-  else { const wait = setInterval(() => { if(ytReady){ clearInterval(wait); init(); } }, 150); }
+  if(ytReady) build();
+  else { const wait = setInterval(() => { if(ytReady || myToken !== ytToken){ clearInterval(wait); build(); } }, 150); }
 }
 function onYtStateChange(e){
   if(e.data === YT.PlayerState.PLAYING){
@@ -916,10 +968,10 @@ function setCoverMode(mode, imgUrl){
   document.getElementById('ytMount').style.display = mode === 'youtube' ? 'block' : 'none';
   document.getElementById('scMountWrap').style.display = mode === 'soundcloud' ? 'block' : 'none';
   const scImg = document.getElementById('scCoverImg');
-  if(mode === 'soundcloud' && imgUrl){ scImg.src = imgUrl; scImg.style.display = 'block'; }
+  if((mode === 'soundcloud' || mode === 'image') && imgUrl){ scImg.src = imgUrl; scImg.style.display = 'block'; }
   else { scImg.style.display = 'none'; }
   // mientras llega la portada de SoundCloud se tapa el iframe con el ícono ♪ (el iframe sigue visible por debajo para que suene)
-  audioIconLayer.style.display = (mode === 'audio' || (mode === 'soundcloud' && !imgUrl)) ? 'flex' : 'none';
+  audioIconLayer.style.display = (mode === 'audio' || ((mode === 'soundcloud' || mode === 'image') && !imgUrl)) ? 'flex' : 'none';
 }
 function setVinylLabel(url){
   document.getElementById('vinylLabel').innerHTML = url ? `<img src="${url}" alt="">` : '';
@@ -975,6 +1027,7 @@ function loadTrack(i, muted){
 
   const url = t.url || t.src || '';
   stopAllEngines();
+  destroyYt(); // si había un video reproduciéndose en su tarjeta, vuelve a su portada
 
   if(!url){
     engine = null;
@@ -998,7 +1051,7 @@ function loadTrack(i, muted){
     setNowPlayingTitle(`${t.title} — ${t.tag}`, url);
     setCoverMode('youtube');
     setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
-    ensureYtPlayer(() => {
+    ensureYtPlayer(document.getElementById('ytMount'), 'bar', false, () => {
       if(muted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(Math.round(pVol.value * 100)); }
       ytPlayer.loadVideoById(ytId);
     });
@@ -1013,7 +1066,9 @@ function loadTrack(i, muted){
   }
 }
 
-function loadVideoTrack(i, muted){
+/* mode 'card' = el video se reproduce dentro de su tarjeta (con la barra de abajo controlándolo)
+   mode 'bar'  = el video vive en la miniatura de la barra (se usa en el autoplay inicial) */
+function loadVideoTrack(i, muted, mode){
   if(!VIDEOS.length) return;
   currentVideoIndex = (i + VIDEOS.length) % VIDEOS.length;
   const v = VIDEOS[currentVideoIndex];
@@ -1023,12 +1078,16 @@ function loadVideoTrack(i, muted){
   engine = 'youtube';
   pendingUnmute = !!muted;
   stopAllEngines();
-  setCoverMode('youtube');
-  setVinylLabel(`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`);
+  const thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+  setVinylLabel(thumbUrl);
   playerBar.classList.add('active');
   setNowPlayingTitle(v.title, v.url);
   document.querySelectorAll('.track').forEach(r => r.classList.remove('playing'));
-  ensureYtPlayer(() => {
+
+  const thumb = document.querySelector(`.video-card[data-idx="${currentVideoIndex}"] .video-thumb`);
+  const inlineOk = mode !== 'bar' && !!thumb && thumb.offsetParent !== null;
+  setCoverMode(inlineOk ? 'image' : 'youtube', thumbUrl);
+  ensureYtPlayer(inlineOk ? thumb : document.getElementById('ytMount'), inlineOk ? 'v' + currentVideoIndex : 'bar', inlineOk, () => {
     if(muted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(Math.round(pVol.value * 100)); }
     ytPlayer.loadVideoById(ytId);
   });
@@ -1042,7 +1101,7 @@ function autoplayRandom(){
   TRACKS.forEach((t,i) => { if(t.url || t.src) pool.push({ type:'track', index:i }); });
   if(!pool.length) return;
   const pick = pool[Math.floor(Math.random() * pool.length)];
-  if(pick.type === 'video') loadVideoTrack(pick.index, true);
+  if(pick.type === 'video') loadVideoTrack(pick.index, true, 'bar');
   else loadTrack(pick.index, true);
 }
 document.addEventListener('click', tryUnmuteOnce);
@@ -1071,13 +1130,14 @@ playToggle.addEventListener('click', () => {
     loadTrack(0);
   }
 });
+function videoMode(){ return ytKey === 'bar' ? 'bar' : 'card'; }
 function goNext(){
-  if(activeSource === 'videos') loadVideoTrack(currentVideoIndex + 1);
+  if(activeSource === 'videos') loadVideoTrack(currentVideoIndex + 1, false, videoMode());
   else if(activeSource === 'tracks') loadTrack(currentIndex + 1);
   else if(TRACKS.length) loadTrack(0);
 }
 function goPrev(){
-  if(activeSource === 'videos') loadVideoTrack(currentVideoIndex - 1);
+  if(activeSource === 'videos') loadVideoTrack(currentVideoIndex - 1, false, videoMode());
   else if(activeSource === 'tracks') loadTrack(currentIndex - 1);
   else if(TRACKS.length) loadTrack(TRACKS.length - 1);
 }
