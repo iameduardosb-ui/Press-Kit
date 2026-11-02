@@ -48,7 +48,7 @@
     }
   ],
   "bio": {
-    "photo": "images/moody-portrait-with-gold-accented-sunglasses.png",
+    "photo": "images/a5bfcc89-7251-4171-bb95-1766621f6ff0.png",
     "paragraphs": [
       "Nacido musicalmente en las calles de Valledupar, donde aprendió a mover la pista con energía callejera y sabor. Un viaje a Medellín lo conectó definitivamente con el Techno, y hoy desde Pereira, está forjando un sonido propio: oscuro, melódico y profundamente underground.",
       "Su propuesta es un viaje. Un equilibrio entre ritmos intensos, grooves hipnóticos y texturas profundas que atrapan y no sueltan. Música hecha para las 3AM, para los que no van a una fiesta, van a perderse en ella.",
@@ -166,12 +166,20 @@
     ],
     "genres": [
       {
+        "name": "RAW",
+        "bpm": "138 - 144"
+      },
+      {
         "name": "Groove",
         "bpm": "137 - 142 BM"
       },
       {
         "name": "House",
         "bpm": "126 - 128 BPM"
+      },
+      {
+        "name": "Hypnotic",
+        "bpm": "120 - 128"
       }
     ],
     "kicker_prefix": "Press-Kit"
