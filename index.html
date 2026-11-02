@@ -245,19 +245,38 @@
   .gallery-item img{ width:100%; height:100%; object-fit:cover; transition:.3s; }
   .gallery-item:hover img{ transform:scale(1.04); }
 
-  .video-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  @media(max-width:800px){ .video-grid{ grid-template-columns:1fr; } }
-  .video-card{ cursor:pointer; }
+  /* tira horizontal con scroll: el video activo se agranda y los demás se encogen */
+  .video-grid{
+    display:flex; align-items:flex-start; gap:20px; overflow-x:auto; padding-bottom:16px;
+    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent;
+  }
+  .video-grid::-webkit-scrollbar{ height:6px; }
+  .video-grid::-webkit-scrollbar-thumb{ background:var(--line-strong); border-radius:3px; }
+  .video-grid::-webkit-scrollbar-track{ background:transparent; }
+  .video-grid .video-card{
+    flex:0 0 clamp(260px, 26vw, 380px); min-width:0; scroll-snap-align:start; cursor:pointer;
+    transition:flex-basis .5s cubic-bezier(.4,0,.2,1), opacity .5s ease, transform .7s ease;
+  }
+  .video-grid.has-playing .video-card:not(.is-playing){ flex-basis:clamp(190px, 17vw, 250px); opacity:.6; }
+  .video-grid.has-playing .video-card:not(.is-playing):hover{ opacity:1; }
+  .video-grid .video-card.is-playing{ flex-basis:clamp(320px, 56vw, 840px); opacity:1; scroll-snap-align:center; }
+  @media(max-width:800px){
+    .video-grid .video-card{ flex-basis:78vw; }
+    .video-grid.has-playing .video-card:not(.is-playing){ flex-basis:56vw; }
+    .video-grid .video-card.is-playing{ flex-basis:92vw; }
+  }
+  .video-meta span:first-child{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .video-meta{ gap:10px; }
+  .rail-nav{ display:flex; justify-content:flex-end; gap:10px; margin:-30px 0 18px; }
+  .rail-btn{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:.2s; }
+  .rail-btn:hover{ border-color:var(--accent); color:var(--accent); }
   .video-thumb{ aspect-ratio:16/9; position:relative; overflow:hidden; }
   .video-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .video-thumb::after{ content:''; position:absolute; inset:0; background:rgba(0,0,0,.3); opacity:0; transition:.2s; }
   .video-card:hover .video-thumb::after{ opacity:1; }
-  .video-grid{ grid-auto-flow:dense; }
-  .video-card.is-playing{ grid-column:span 2; animation:cardGrow .45s ease; }
   .video-card.is-playing .video-thumb{ box-shadow:0 0 0 1px var(--accent), 0 28px 54px -26px rgba(0,0,0,.85); }
   .video-card.is-playing .video-meta{ color:var(--fg); }
-  @keyframes cardGrow{ from{ transform:scale(.94); opacity:.6; } to{ transform:none; opacity:1; } }
-  @media(max-width:800px){ .video-card.is-playing{ grid-column:auto; } }
   .video-thumb{ cursor:pointer; }
   .video-thumb.playing{ cursor:default; border-color:transparent; padding:0; background:#000; }
   .video-thumb.playing img, .video-thumb.playing .play-ring{ display:none; }
@@ -473,6 +492,10 @@
     <div class="eyebrow">Sets en vivo</div>
     <h2>Videos</h2>
     <p id="videosIntro">Grabaciones de sets, aftermovies y clips de festivales. Dale play para verlos aquí mismo; el título o un doble clic te llevan a YouTube.</p>
+  </div>
+  <div class="rail-nav">
+    <button class="rail-btn" id="videoPrev" type="button" aria-label="Videos anteriores">‹</button>
+    <button class="rail-btn" id="videoNext" type="button" aria-label="Más videos">›</button>
   </div>
   <div class="video-grid" id="videoGrid"></div>
 </section>
@@ -831,6 +854,9 @@ function initInteractions(){
   // Clic en el título = abrir en YouTube (es un enlace normal).
   let videoClickTimer = null;
   const videoGrid = document.getElementById('videoGrid');
+  const railScroll = dir => { if(videoGrid.scrollBy) videoGrid.scrollBy({ left: dir * videoGrid.clientWidth * 0.8, behavior:'smooth' }); };
+  document.getElementById('videoPrev').addEventListener('click', () => railScroll(-1));
+  document.getElementById('videoNext').addEventListener('click', () => railScroll(1));
   videoGrid.addEventListener('click', (e) => {
     if(e.target.closest('a')) return;
     const thumb = e.target.closest('.video-thumb');
@@ -921,7 +947,10 @@ function resetInlineVideo(){
   if(inlineThumb){
     inlineThumb.classList.remove('playing');
     const ownerCard = inlineThumb.closest('.video-card');
-    if(ownerCard) ownerCard.classList.remove('is-playing');
+    if(ownerCard){
+      ownerCard.classList.remove('is-playing');
+      if(ownerCard.parentElement) ownerCard.parentElement.classList.remove('has-playing');
+    }
     const m = inlineThumb.querySelector('.yt-inline');
     if(m) m.remove();
     inlineThumb = null;
@@ -951,8 +980,11 @@ function ensureYtPlayer(container, key, showControls, cb){
       container.classList.add('playing'); inlineThumb = container;
       const card = container.closest('.video-card');
       if(card){
-        card.classList.add('is-playing');   // la tarjeta crece para destacar el video que se está viendo
-        requestAnimationFrame(() => { if(card.scrollIntoView) card.scrollIntoView({ behavior:'smooth', block:'nearest' }); });
+        card.classList.add('is-playing');   // la tarjeta crece y las demás se encogen
+        const rail = card.parentElement;
+        if(rail) rail.classList.add('has-playing');
+        // cuando termina de crecer, se centra en la tira
+        setTimeout(() => { if(card.classList.contains('is-playing') && card.scrollIntoView) card.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' }); }, 540);
       }
     }
     ytKey = key;
