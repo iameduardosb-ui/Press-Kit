@@ -127,19 +127,90 @@
   .vinyl-wrap{ display:flex; align-items:center; gap:14px; justify-self:center; }
   .vinyl-nav{ background:none; border:1px solid var(--line-strong); color:var(--fg); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:.2s; flex-shrink:0; }
   .vinyl-nav:hover{ border-color:var(--accent); color:var(--accent); }
-  .vinyl{
-    cursor:pointer;
-    width:clamp(140px,18vw,260px); aspect-ratio:1; border-radius:50%; position:relative;
-    background: repeating-radial-gradient(circle at center, #1c1c1e 0 2px, #141416 2px 4px);
-    box-shadow:0 0 0 1px var(--line), 0 30px 60px -20px rgba(0,0,0,.7);
-    animation:spin 6s linear infinite; animation-play-state:paused;
+  @media(max-width:520px){ .vinyl-nav{ width:32px; height:32px; font-size:15px; } .vinyl-wrap{ gap:10px; } }
+
+  /* ---------- tornamesa ---------- */
+  .turntable{ --tt:clamp(250px,30vw,430px); position:relative; }
+  .tt-deck{
+    position:relative; width:var(--tt); height:calc(var(--tt) * .96); border-radius:calc(var(--tt) * .035);
+    background:linear-gradient(150deg, var(--bg-raise), var(--bg-alt) 60%, var(--bg));
+    border:1px solid var(--line-strong);
+    box-shadow:0 40px 70px -28px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 calc(var(--tt) * .012) rgba(0,0,0,.35);
   }
-  @media(max-width:520px){ .vinyl-nav{ width:32px; height:32px; font-size:15px; } }
-  .vinyl.spinning{ animation-play-state:running; }
+  .tt-platter{
+    position:absolute; left:calc(var(--tt) * .06); top:calc(var(--tt) * .06);
+    width:calc(var(--tt) * .74); height:calc(var(--tt) * .74); border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #4a4a4d, #222 55%, #111);
+    box-shadow:0 0 0 calc(var(--tt) * .006) rgba(255,255,255,.08), 0 10px 24px rgba(0,0,0,.6), inset 0 0 12px rgba(0,0,0,.8);
+  }
+  /* marcas estroboscópicas en el borde del plato */
+  .tt-platter::before{
+    content:''; position:absolute; inset:0; border-radius:50%; opacity:.55; pointer-events:none;
+    background:repeating-conic-gradient(rgba(255,255,255,.55) 0 .8deg, transparent .8deg 4.5deg);
+    -webkit-mask:radial-gradient(circle closest-side, transparent 94.5%, #000 95%, #000 98%, transparent 98.5%);
+            mask:radial-gradient(circle closest-side, transparent 94.5%, #000 95%, #000 98%, transparent 98.5%);
+  }
+  /* brillo fijo sobre el vinilo (no gira con el disco) */
+  .tt-platter::after{
+    content:''; position:absolute; inset:3.2%; border-radius:50%; pointer-events:none; z-index:3;
+    background:conic-gradient(from 25deg, transparent 0 18%, rgba(255,255,255,.075) 24%, transparent 30% 68%, rgba(255,255,255,.06) 74%, transparent 80%);
+  }
+  .vinyl{
+    cursor:pointer; position:absolute; inset:3.2%; border-radius:50%; will-change:transform;
+    background:repeating-radial-gradient(circle at center, #1c1c1e 0 2px, #141416 2px 4px);
+    box-shadow:0 0 0 1px var(--line);
+  }
   .vinyl-label{ position:absolute; inset:32%; border-radius:50%; overflow:hidden; background:var(--accent); z-index:1; }
   .vinyl-label img{ width:100%; height:100%; object-fit:cover; }
-  .vinyl::after{ content:''; position:absolute; inset:47%; border-radius:50%; background:#0a0a0b; z-index:2; }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .vinyl::after{ content:''; position:absolute; inset:48%; border-radius:50%; background:radial-gradient(circle at 35% 30%, #d6d6d9, #6d6d72); z-index:2; }
+
+  /* pivote y brazo con aguja */
+  .tt-pivot{
+    position:absolute; left:calc(var(--tt) * .88); top:calc(var(--tt) * .13); width:calc(var(--tt) * .13); height:calc(var(--tt) * .13);
+    transform:translate(-50%,-50%); border-radius:50%; z-index:4;
+    background:radial-gradient(circle at 35% 30%, #6a6a6e, #2a2a2c 60%, #151516);
+    box-shadow:0 4px 10px rgba(0,0,0,.6), 0 0 0 calc(var(--tt) * .008) rgba(255,255,255,.08);
+  }
+  .tt-pivot::after{ content:''; position:absolute; inset:30%; border-radius:50%; background:radial-gradient(circle at 35% 30%, #e6e6e9, #77777c); }
+  .tt-arm{
+    position:absolute; left:calc(var(--tt) * .88); top:calc(var(--tt) * .13); width:0; height:0; z-index:5;
+    transform-origin:0 0; transform:rotate(var(--arm-rot, 0deg));
+    transition:transform 1s cubic-bezier(.45,.05,.25,1), filter .5s;
+    filter:drop-shadow(1px 3px 2px rgba(0,0,0,.55));
+  }
+  .tt-arm.lifted{ filter:drop-shadow(7px 11px 5px rgba(0,0,0,.32)); }
+  .tt-arm-bar{ position:absolute; left:calc(var(--tt) * -.009); top:0; width:calc(var(--tt) * .018); height:calc(var(--tt) * .54); border-radius:99px; background:linear-gradient(90deg, #6d6d72, #e4e4e7 45%, #8d8d92); }
+  .tt-arm-back{ position:absolute; left:calc(var(--tt) * -.009); top:calc(var(--tt) * -.045); width:calc(var(--tt) * .018); height:calc(var(--tt) * .045); background:linear-gradient(90deg, #6d6d72, #e4e4e7 45%, #8d8d92); }
+  .tt-cw{ position:absolute; left:calc(var(--tt) * -.034); top:calc(var(--tt) * -.13); width:calc(var(--tt) * .068); height:calc(var(--tt) * .088); border-radius:5px; background:linear-gradient(90deg, #1a1a1c, #4d4d52 45%, #1a1a1c); box-shadow:inset 0 0 0 1px rgba(255,255,255,.1); }
+  .tt-head{
+    position:absolute; left:calc(var(--tt) * -.032); top:calc(var(--tt) * .52); width:calc(var(--tt) * .064); height:calc(var(--tt) * .085);
+    border-radius:3px 3px 6px 6px; background:linear-gradient(180deg, #2c2c2f, #111); border:1px solid rgba(255,255,255,.18);
+    transform-origin:50% 0; transform:rotate(-14deg);
+  }
+  .tt-head::before{ content:''; position:absolute; left:12%; right:12%; top:14%; height:16%; background:var(--accent); border-radius:1px; }
+  .tt-needle{ position:absolute; left:calc(50% - 1px); bottom:calc(var(--tt) * -.014); width:2px; height:calc(var(--tt) * .022); background:#ececec; }
+
+  /* botones CUE / PLAY */
+  .tt-controls{ position:absolute; left:calc(var(--tt) * .06); bottom:calc(var(--tt) * .032); display:flex; gap:calc(var(--tt) * .03); z-index:6; }
+  .tt-btn{
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; user-select:none; -webkit-tap-highlight-color:transparent;
+    min-width:calc(var(--tt) * .2); padding:calc(var(--tt) * .024) calc(var(--tt) * .04);
+    font-family:var(--mono); font-size:clamp(9px, calc(var(--tt) * .03), 13px); letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    background:linear-gradient(180deg, #2a2a2d, #161617); border:1px solid var(--line-strong); border-radius:7px;
+    box-shadow:0 2px 0 rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.09); transition:.15s;
+  }
+  .tt-btn:hover{ color:var(--fg); }
+  .tt-btn:active{ transform:translateY(1px); box-shadow:0 1px 0 rgba(0,0,0,.65); }
+  .tt-btn .led{ width:6px; height:6px; border-radius:50%; background:#3a3a3d; transition:.2s; }
+  .tt-btn.on{ color:var(--fg); border-color:var(--accent); }
+  .tt-btn.on .led{ background:var(--accent); box-shadow:0 0 9px var(--accent); }
+  .tt-speed{ position:absolute; right:calc(var(--tt) * .06); bottom:calc(var(--tt) * .045); font-family:var(--mono); font-size:clamp(8px, calc(var(--tt) * .026), 11px); letter-spacing:.14em; color:var(--muted); opacity:.7; }
+
+  @media(max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .turntable{ --tt:min(64vw, 380px); }
+    .vinyl-wrap{ margin-top:8px; }
+  }
 
   .hero-meta{ display:flex; gap:32px; margin-top:56px; font-family:var(--mono); font-size:12px; color:var(--muted); flex-wrap:wrap; }
   .hero-meta b{ color:var(--fg); display:block; font-size:20px; font-family:var(--body); font-weight:600; }
@@ -181,6 +252,12 @@
   .video-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .video-thumb::after{ content:''; position:absolute; inset:0; background:rgba(0,0,0,.3); opacity:0; transition:.2s; }
   .video-card:hover .video-thumb::after{ opacity:1; }
+  .video-grid{ grid-auto-flow:dense; }
+  .video-card.is-playing{ grid-column:span 2; animation:cardGrow .45s ease; }
+  .video-card.is-playing .video-thumb{ box-shadow:0 0 0 1px var(--accent), 0 28px 54px -26px rgba(0,0,0,.85); }
+  .video-card.is-playing .video-meta{ color:var(--fg); }
+  @keyframes cardGrow{ from{ transform:scale(.94); opacity:.6; } to{ transform:none; opacity:1; } }
+  @media(max-width:800px){ .video-card.is-playing{ grid-column:auto; } }
   .video-thumb{ cursor:pointer; }
   .video-thumb.playing{ cursor:default; border-color:transparent; padding:0; background:#000; }
   .video-thumb.playing img, .video-thumb.playing .play-ring{ display:none; }
@@ -343,8 +420,26 @@
     </div>
     <div class="vinyl-wrap">
       <button class="vinyl-nav" id="vinylPrev" aria-label="Mix anterior">‹</button>
-      <div class="vinyl" id="heroVinyl" title="Reproducir / pausar">
-        <div class="vinyl-label" id="vinylLabel"></div>
+      <div class="turntable">
+        <div class="tt-deck" id="ttDeck">
+          <div class="tt-platter">
+            <div class="vinyl" id="heroVinyl" title="Reproducir / pausar">
+              <div class="vinyl-label" id="vinylLabel"></div>
+            </div>
+          </div>
+          <div class="tt-pivot"></div>
+          <div class="tt-arm" id="ttArm">
+            <div class="tt-arm-back"></div>
+            <div class="tt-cw"></div>
+            <div class="tt-arm-bar"></div>
+            <div class="tt-head"><i class="tt-needle"></i></div>
+          </div>
+          <div class="tt-controls">
+            <button class="tt-btn" id="ttCue" type="button" aria-label="Cue: volver al inicio y pausar"><i class="led"></i>CUE</button>
+            <button class="tt-btn" id="ttPlay" type="button" aria-label="Reproducir o pausar"><i class="led"></i><span id="ttPlayIcon">▶</span>&nbsp;PLAY</button>
+          </div>
+          <div class="tt-speed">33⅓ RPM</div>
+        </div>
       </div>
       <button class="vinyl-nav" id="vinylNext" aria-label="Siguiente mix">›</button>
     </div>
@@ -825,6 +920,8 @@ let ytToken = 0;
 function resetInlineVideo(){
   if(inlineThumb){
     inlineThumb.classList.remove('playing');
+    const ownerCard = inlineThumb.closest('.video-card');
+    if(ownerCard) ownerCard.classList.remove('is-playing');
     const m = inlineThumb.querySelector('.yt-inline');
     if(m) m.remove();
     inlineThumb = null;
@@ -850,7 +947,14 @@ function ensureYtPlayer(container, key, showControls, cb){
     const mount = document.createElement('div');
     wrap.appendChild(mount);
     container.appendChild(wrap);
-    if(key !== 'bar'){ container.classList.add('playing'); inlineThumb = container; }
+    if(key !== 'bar'){
+      container.classList.add('playing'); inlineThumb = container;
+      const card = container.closest('.video-card');
+      if(card){
+        card.classList.add('is-playing');   // la tarjeta crece para destacar el video que se está viendo
+        requestAnimationFrame(() => { if(card.scrollIntoView) card.scrollIntoView({ behavior:'smooth', block:'nearest' }); });
+      }
+    }
     ytKey = key;
     ytPlayer = new YT.Player(mount, {
       height:'100%', width:'100%',
@@ -932,6 +1036,7 @@ function startProgressTimerSC(){
       pSeek.value = scCurrentDuration ? (pos/scCurrentDuration) * 100 : 0;
       pCur.textContent = fmt(pos/1000);
       pDur.textContent = fmt(scCurrentDuration/1000);
+      syncArmProgress();
     });
   }, 500);
 }
@@ -944,13 +1049,70 @@ function startProgressTimer(){
     pSeek.value = dur ? (cur/dur) * 100 : 0;
     pCur.textContent = fmt(cur);
     pDur.textContent = fmt(dur);
+    syncArmProgress();
   }, 500);
 }
 function stopProgressTimer(){ if(progressTimer){ clearInterval(progressTimer); progressTimer = null; } }
 
+/* ---------- tornamesa: plato con inercia, aguja que recorre el disco, CUE y PLAY ---------- */
+const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const ARM_OUT = 27, ARM_IN = 44;      // grados del brazo: surco exterior → surco interior
+let vAngle = 0, vSpeed = 0, vTarget = 0, vLast = 0, vRaf = null;
+let armState = 'rest', armProgress = 0, isPlayingUI = false;
+
+function vinylTick(ts){
+  const dt = Math.min(0.05, (ts - vLast) / 1000); vLast = ts;
+  vSpeed += (vTarget - vSpeed) * Math.min(1, dt * 3.2);   // arranca y frena poco a poco, como un plato real
+  vAngle = (vAngle + vSpeed * 200 * dt) % 360;             // 200°/s ≈ 33⅓ rpm
+  heroVinyl.style.transform = `rotate(${vAngle.toFixed(2)}deg)`;
+  if(vTarget === 0 && vSpeed < 0.003){ vSpeed = 0; vRaf = null; return; }
+  vRaf = requestAnimationFrame(vinylTick);
+}
+function setVinylSpin(on){
+  if(reduceMotion) return;
+  vTarget = on ? 1 : 0;
+  if(!vRaf){ vLast = performance.now(); vRaf = requestAnimationFrame(vinylTick); }
+}
+function updateArm(){
+  const arm = document.getElementById('ttArm'); if(!arm) return;
+  // 'rest' = aguja estacionada fuera del disco · 'play' = sobre el surco · 'lift' = levantada (en pausa)
+  const rot = armState === 'rest' ? 0 : ARM_OUT + (ARM_IN - ARM_OUT) * armProgress;
+  arm.style.setProperty('--arm-rot', rot.toFixed(2) + 'deg');
+  arm.classList.toggle('lifted', armState === 'lift');
+}
+function setArm(state){ armState = state; updateArm(); }
+function syncArmProgress(){
+  armProgress = Math.min(1, Math.max(0, (parseFloat(pSeek.value) || 0) / 100));
+  if(armState !== 'rest') updateArm();
+}
+function updateDeckButtons(){
+  const play = document.getElementById('ttPlay'), cue = document.getElementById('ttCue');
+  if(!play || !cue) return;
+  play.classList.toggle('on', isPlayingUI);
+  document.getElementById('ttPlayIcon').textContent = isPlayingUI ? '❚❚' : '▶';
+  if(isPlayingUI) cue.classList.remove('on');
+}
 function setPlayIcon(isPlaying){
   playToggle.textContent = isPlaying ? '❚❚' : '▶';
   heroVinyl.classList.toggle('spinning', isPlaying);
+  isPlayingUI = isPlaying;
+  setVinylSpin(isPlaying);
+  setArm(isPlaying ? 'play' : (engine ? 'lift' : 'rest'));
+  updateDeckButtons();
+}
+function resetProgressUI(){
+  pSeek.value = 0; pCur.textContent = '0:00'; pDur.textContent = '0:00';
+  armProgress = 0; if(armState !== 'rest') updateArm();
+}
+// CUE: vuelve al inicio y se queda en pausa (como el punto cue de un reproductor DJ)
+function cuePoint(){
+  if(engine === 'youtube' && ytPlayer && ytPlayer.seekTo){ ytPlayer.seekTo(0, true); ytPlayer.pauseVideo(); }
+  else if(engine === 'soundcloud' && scWidget){ scWidget.seekTo(0); scWidget.pause(); }
+  else if(engine === 'audio'){ audio.currentTime = 0; audio.pause(); }
+  else return;
+  pSeek.value = 0; pCur.textContent = '0:00'; armProgress = 0;
+  setPlayIcon(false);
+  document.getElementById('ttCue').classList.add('on');
 }
 function setNowPlayingTitle(text, href){
   pTitle.innerHTML = href ? `<a href="${href}" target="_blank" rel="noopener">${text} ↗</a>` : text;
@@ -1022,6 +1184,7 @@ function loadTrack(i, muted){
   const t = TRACKS[currentIndex];
   activeSource = 'tracks';
   pendingUnmute = !!muted;
+  resetProgressUI();
   document.querySelectorAll('.track').forEach(r => r.classList.toggle('playing', parseInt(r.dataset.index) === currentIndex));
   playerBar.classList.add('active');
 
@@ -1077,6 +1240,7 @@ function loadVideoTrack(i, muted, mode){
   activeSource = 'videos';
   engine = 'youtube';
   pendingUnmute = !!muted;
+  resetProgressUI();
   stopAllEngines();
   const thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
   setVinylLabel(thumbUrl);
@@ -1146,6 +1310,25 @@ document.getElementById('prevBtn').addEventListener('click', goPrev);
 document.getElementById('vinylNext').addEventListener('click', goNext);
 document.getElementById('vinylPrev').addEventListener('click', goPrev);
 heroVinyl.addEventListener('click', () => playToggle.click());
+document.getElementById('ttPlay').addEventListener('click', () => playToggle.click());
+// CUE: un toque = volver al inicio y pausar. Mantenerlo presionado = escuchar desde el inicio; al soltar vuelve al cue.
+let cueDown = false, cueHoldTimer = null;
+const ttCue = document.getElementById('ttCue');
+ttCue.addEventListener('pointerdown', () => {
+  if(!engine) return;
+  cueDown = true;
+  clearTimeout(cueHoldTimer);
+  cueHoldTimer = setTimeout(() => { if(cueDown && !isPlayingUI) playToggle.click(); }, 260);
+});
+function cueRelease(){
+  if(!cueDown) return;
+  cueDown = false; clearTimeout(cueHoldTimer);
+  cuePoint();
+}
+ttCue.addEventListener('pointerup', cueRelease);
+ttCue.addEventListener('pointerleave', cueRelease);
+ttCue.addEventListener('pointercancel', cueRelease);
+ttCue.addEventListener('click', () => { if(!cueDown) cuePoint(); });  // teclado (Enter / Espacio)
 document.getElementById('heroPlay').addEventListener('click', () => {
   document.getElementById('mixes').scrollIntoView({behavior:'smooth'});
   if(engine === null) loadTrack(0);
@@ -1163,8 +1346,10 @@ audio.addEventListener('timeupdate', () => {
   pSeek.value = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
   pCur.textContent = fmt(audio.currentTime);
   pDur.textContent = fmt(audio.duration);
+  syncArmProgress();
 });
 pSeek.addEventListener('input', () => {
+  syncArmProgress();
   if(engine === 'youtube' && ytPlayer && ytPlayer.getDuration){
     const dur = ytPlayer.getDuration();
     if(dur) ytPlayer.seekTo((pSeek.value/100) * dur, true);
