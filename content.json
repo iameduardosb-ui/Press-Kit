@@ -45,6 +45,12 @@
       "dur": "34:11",
       "src": "https://soundcloud.com/lileduar/potaje-carcelario?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
       "url": "https://soundcloud.com/lileduar/potaje-carcelario"
+    },
+    {
+      "url": "https://soundcloud.com/lileduar/hipnosis?si=4a04aaf90fc84df394b7203a06cfb5b6&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "dur": "56.33",
+      "title": "Hipnosis",
+      "tag": "Hypnotic techno"
     }
   ],
   "bio": {
@@ -90,21 +96,26 @@
   ],
   "videos": [
     {
+      "url": "https://youtu.be/qmLimnp7Ulg",
+      "title": "Hipnosis",
+      "year": "2026"
+    },
+    {
       "title": "Baretechno",
       "year": "2026",
       "url": "https://youtu.be/F4xjXWB9Fqs"
-    },
-    {
-      "title": "Live Set Especial 20 Sub, Pereira",
-      "year": "2026",
-      "youtube_id": "dQw4w9WgXcQ",
-      "url": "https://youtu.be/vLWBPt_COUQ"
     },
     {
       "title": "Potaje Carcelario",
       "year": "2026",
       "youtube_id": "dQw4w9WgXcQ",
       "url": "https://youtu.be/Ak9tzxvbzPA"
+    },
+    {
+      "title": "Live Set Especial 20 Sub, Pereira",
+      "year": "2026",
+      "youtube_id": "dQw4w9WgXcQ",
+      "url": "https://youtu.be/vLWBPt_COUQ"
     }
   ],
   "booking": {
